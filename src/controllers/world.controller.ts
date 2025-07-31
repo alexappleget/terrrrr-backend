@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import { IAuthenticatedRequest } from "../types/interface";
 import { Response } from "express";
 
@@ -10,32 +10,25 @@ export const createWorld = async (
 ) => {
   try {
     const { id } = request.user!;
-    const { name } = request.body;
+    const { name, description, icon } = request.body;
 
-    await prisma.world.create({
+    const newWorld = await prisma.world.create({
       data: {
         name: name,
-      },
-    });
-  } catch (error) {
-    return response.status(500).json({ error });
-  }
-};
-
-export const fetchUserWorlds = async (
-  request: IAuthenticatedRequest,
-  response: Response
-) => {
-  try {
-    const { id } = request.user!;
-
-    const userWorlds = await prisma.world.findMany({
-      where: {
-        OR: [{ ownerId: id }, { members: { some: { userId: id } } }],
+        description: description,
+        icon: icon,
       },
     });
 
-    return response.status(200).json({ userWorlds });
+    await prisma.worldMembership.create({
+      data: {
+        userId: id,
+        worldId: newWorld.id,
+        role: Role.OWNER,
+      },
+    });
+
+    return response.status(200);
   } catch (error) {
     return response.status(500).json({ error });
   }
@@ -55,13 +48,3 @@ export const getWorldById = async (
     return response.status(500).json({ error });
   }
 };
-
-export const updateWorld = async (
-  request: IAuthenticatedRequest,
-  response: Response
-) => {};
-
-export const deleteWorld = async (
-  request: IAuthenticatedRequest,
-  response: Response
-) => {};

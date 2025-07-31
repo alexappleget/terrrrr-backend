@@ -22,7 +22,16 @@ model User {
 }
 
 model World {
-  id
+  id String @id @default(cuid())
+  name String
+  description String
+  icon String
+  createdAt DateTime @default(now())
+  joinCode JoinCode?
+  memberships WorldMembership[]
+  bosses WorldBossProgress[]
+  notes Note[]
+  events Event[]
 }
 
 model WorldMembership {
@@ -66,8 +75,7 @@ model WorldBossProgress {
   world World @relation(fields: [worldId], references: [id])
   worldId String
   killedBy User? @relation(fields: [killedById], references: [id])
-  killedById String?
-  killedAt DateTime
+  killedById String
 }
 
 model Note {
