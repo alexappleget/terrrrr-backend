@@ -30,3 +30,5 @@ coverage/
 
 # Optional if you use PM2
 *.pm2
+
+/src/generated/prisma

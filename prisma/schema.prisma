@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+  username String @unique
+  password String
+  salt String
+  createdAt DateTime @default(now())
+  memberships WorldMembership[]
+  events Event[]
+  RSVPs EventRSVP[]
+  notes Note[]
+  buildProgress UserBuildProgress[]
+  killedBosses WorldBossProgress[]
+}
+
+model World {
+  id
+}
+
+model WorldMembership {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  world World @relation(fields: [worldId], references: [id])
+  worldId String
+  role Role @default(MEMBER)
+  @@unique([userId, worldId])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  SUB_ADMIN
+  MEMBER
+}
+
+model JoinCode {
+  id String @id @default(cuid())
+  code String @unique
+  isLocked Boolean @default(false)
+  world World @relation(fields: [worldId], references: [id])
+  worldId String @unique
+  createdAt DateTime @default(now())
+}
+
+model Boss {
+  id String @id @default(cuid())
+  name String @unique
+  description String?
+  icon String?
+  worldProgress WorldBossProgress[]
+}
+
+model WorldBossProgress {
+  id String @id @default(cuid())
+  boss Boss @relation(fields: [bossId], references: [id])
+  bossId String
+  world World @relation(fields: [worldId], references: [id])
+  worldId String
+  killedBy User? @relation(fields: [killedById], references: [id])
+  killedById String?
+  killedAt DateTime
+}
+
+model Note {
+  id String @id @default(cuid())
+  content String
+  author User @relation(fields: [authorId], references: [id])
+  authorId String
+  world World @relation(fields: [worldId], references: [id])
+  worldId String
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id String @id @default(cuid())
+  name String
+  description String?
+  scheduledAt DateTime
+  world World @relation(fields: [worldId], references: [id])
+  worldId String
+  createdBy User @relation(fields: [createdById], references: [id])
+  createdById String
+  RSVPs EventRSVP[]
+}
+
+model EventRSVP {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  event Event @relation(fields: [eventId], references: [id])
+  eventId String
+  @@unique([userId, eventId])
+}
+
+model BuildItem {
+  id String @id @default(cuid())
+  name String
+  icon String?
+  type BuildItemType
+  classType ClassType
+  stage GameStage
+  description String?
+  howToGet String
+  damage String?
+  effects String?
+  progress UserBuildProgress[]
+}
+
+model UserBuildProgress {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  item BuildItem @relation(fields: [itemId], references: [id])
+  itemId String
+  acquired Boolean @default(false)
+}
+
+enum BuildItemType {
+  WEAPON
+  ARMOR
+  ACCESSORY
+}
+
+enum ClassType {
+  MELEE
+  RANGER
+  MAGE
+  SUMMONER
+  HYBRID
+}
+
+enum GameStage {
+  PRE_HARDMODE
+  HARDMODE
+  POST_PLANTERA
+  ENDGAME
+}
