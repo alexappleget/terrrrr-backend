@@ -1,19 +1,15 @@
 import { Request, Response } from "express";
 import crypto from "crypto";
-import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { IAuthenticatedRequest, IUserUpdates } from "../types/interface";
+import { JWT_SECRET, prisma } from "../config";
 
-const prisma = new PrismaClient();
-
-const JWT_SECRET = process.env.JWT_SECRET!;
-
-export const signup = async (request: Request, response: Response) => {
+export const signUp = async (request: Request, response: Response) => {
   try {
     const { username, password } = request.body;
 
     const existingUser = await prisma.user.findUnique({
-      where: { username: username },
+      where: { username },
     });
 
     if (existingUser) {
@@ -28,9 +24,9 @@ export const signup = async (request: Request, response: Response) => {
 
     const user = await prisma.user.create({
       data: {
-        username: username,
+        username,
         password: hashedPassword,
-        salt: salt,
+        salt,
       },
     });
 
@@ -38,15 +34,22 @@ export const signup = async (request: Request, response: Response) => {
       id: user.id,
     };
 
-    const authToken = jwt.sign(payload, JWT_SECRET);
+    const token = jwt.sign(payload, JWT_SECRET);
 
-    return response.status(200).json({ authToken });
-  } catch (error) {
-    return response.status(500).json({ error });
+    response.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return response.status(200).json({ success: true });
+  } catch (error: any) {
+    return response.status(500).json({ error: error.message });
   }
 };
 
-export const login = async (request: Request, response: Response) => {
+export const signIn = async (request: Request, response: Response) => {
   try {
     const { username, password } = request.body;
 
@@ -57,7 +60,7 @@ export const login = async (request: Request, response: Response) => {
     }
 
     const user = await prisma.user.findUnique({
-      where: { username: username },
+      where: { username },
     });
 
     if (!user) {
@@ -81,12 +84,32 @@ export const login = async (request: Request, response: Response) => {
       id: user.id,
     };
 
-    const authToken = jwt.sign(payload, JWT_SECRET);
+    const token = jwt.sign(payload, JWT_SECRET);
 
-    return response.status(200).json({ authToken });
+    response.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return response.status(200).json({ success: true });
   } catch (error) {
     return response.status(500).json({ error });
   }
+};
+
+export const signOut = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  response.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  return response.status(200).json({ success: true });
 };
 
 export const fetchUserById = async (
@@ -96,7 +119,7 @@ export const fetchUserById = async (
   try {
     const { id } = request.user!;
 
-    const user = await prisma.user.findUnique({ where: { id: id } });
+    const user = await prisma.user.findUnique({ where: { id } });
 
     return response.status(200).json({ user });
   } catch (error) {
@@ -141,7 +164,7 @@ export const updateUser = async (
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: id },
+      where: { id },
       data: updates,
     });
 
@@ -158,9 +181,9 @@ export const deleteUser = async (
   try {
     const { id } = request.user!;
 
-    await prisma.user.delete({ where: { id: id } });
+    await prisma.user.delete({ where: { id } });
 
-    return response.status(200);
+    return response.status(200).json({ success: true });
   } catch (error) {
     return response.status(500).json({ error });
   }

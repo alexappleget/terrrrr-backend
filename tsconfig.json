@@ -9,6 +9,6 @@
     "rootDir": "./src",
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/seeds/seed.ts", "test.js"],
+  "include": ["src/**/*", "src/seeds/seed.ts", "test.js", "src/app.ts"],
   "exclude": ["node_modules"]
 }

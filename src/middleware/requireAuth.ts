@@ -9,15 +9,14 @@ export const requireAuth = (
   response: Response,
   next: NextFunction
 ) => {
-  const authHeader = request.headers.authorization;
-  const authToken = authHeader && authHeader.split(" ")[1];
+  const token = request.cookies.token;
 
-  if (!authToken) {
+  if (!token) {
     return response.status(400).json({ error: "No token provided" });
   }
 
   try {
-    const decoded = jwt.verify(authToken, JWT_SECRET) as IAuthPayload;
+    const decoded = jwt.verify(token, JWT_SECRET) as IAuthPayload;
     (request as IAuthenticatedRequest).user = decoded;
     next();
   } catch (error) {
