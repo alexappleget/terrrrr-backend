@@ -82,3 +82,26 @@ export const joinEvent = async (
     return response.status(500).json({ error });
   }
 };
+
+export const leaveEvent = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id: eventId } = request.params;
+    const { id: userId } = request.user!;
+
+    await prisma.eventRSVP.delete({
+      where: {
+        userId_eventId: {
+          userId,
+          eventId,
+        },
+      },
+    });
+
+    return response.status(200).json({ success: true });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};

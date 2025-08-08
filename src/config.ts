@@ -7,7 +7,7 @@ if (!process.env.JWT_SECRET) {
 }
 
 export const JWT_SECRET = process.env.JWT_SECRET;
-export const PORT = process.env.PORT;
+export const PORT = process.env.PORT || 6842;
 export const FRONTEND_URL = process.env.FRONTEND_URL;
 
 export const prisma = new PrismaClient();
