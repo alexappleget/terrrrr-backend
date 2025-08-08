@@ -1,7 +1,6 @@
 import express from "express";
 import {
   deleteUser,
-  fetchAllUsers,
   fetchUserById,
   signIn,
   signOut,
@@ -17,7 +16,6 @@ router.post("/signin", signIn);
 router.post("/signout", requireAuth, signOut);
 
 router.get("/fetchUserById", requireAuth, fetchUserById);
-router.get("/fetchAllUsers", requireAuth, fetchAllUsers);
 
 router.put("/update", requireAuth, updateUser);
 

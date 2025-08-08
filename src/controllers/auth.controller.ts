@@ -4,7 +4,6 @@ import { JWT_SECRET } from "../config";
 
 export const session = async (request: Request, response: Response) => {
   try {
-    console.log("Cookie received:", request.cookies);
     const token = request.cookies.token;
 
     if (!token) {

@@ -17,15 +17,12 @@ model User {
   events Event[]
   RSVPs EventRSVP[]
   notes Note[]
-  buildProgress UserBuildProgress[]
-  killedBosses WorldBossProgress[]
 }
 
 model World {
   id String @id @default(cuid())
   name String
   description String
-  icon String
   createdAt DateTime @default(now())
   joinCode JoinCode?
   memberships WorldMembership[]
@@ -54,7 +51,6 @@ enum Role {
 model JoinCode {
   id String @id @default(cuid())
   code String @unique
-  isLocked Boolean @default(false)
   world World @relation(fields: [worldId], references: [id])
   worldId String @unique
   createdAt DateTime @default(now())
@@ -63,8 +59,8 @@ model JoinCode {
 model Boss {
   id String @id @default(cuid())
   name String @unique
-  description String?
-  icon String?
+  health String
+  stage String
   worldProgress WorldBossProgress[]
 }
 
@@ -74,12 +70,12 @@ model WorldBossProgress {
   bossId String
   world World @relation(fields: [worldId], references: [id])
   worldId String
-  killedBy User? @relation(fields: [killedById], references: [id])
-  killedById String
+  killed Boolean
 }
 
 model Note {
   id String @id @default(cuid())
+  title String
   content String
   author User @relation(fields: [authorId], references: [id])
   authorId String
@@ -91,7 +87,7 @@ model Note {
 model Event {
   id String @id @default(cuid())
   name String
-  description String?
+  description String
   scheduledAt DateTime
   world World @relation(fields: [worldId], references: [id])
   worldId String
@@ -107,48 +103,4 @@ model EventRSVP {
   event Event @relation(fields: [eventId], references: [id])
   eventId String
   @@unique([userId, eventId])
-}
-
-model BuildItem {
-  id String @id @default(cuid())
-  name String
-  icon String?
-  type BuildItemType
-  classType ClassType
-  stage GameStage
-  description String?
-  howToGet String
-  damage String?
-  effects String?
-  progress UserBuildProgress[]
-}
-
-model UserBuildProgress {
-  id String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  item BuildItem @relation(fields: [itemId], references: [id])
-  itemId String
-  acquired Boolean @default(false)
-}
-
-enum BuildItemType {
-  WEAPON
-  ARMOR
-  ACCESSORY
-}
-
-enum ClassType {
-  MELEE
-  RANGER
-  MAGE
-  SUMMONER
-  HYBRID
-}
-
-enum GameStage {
-  PRE_HARDMODE
-  HARDMODE
-  POST_PLANTERA
-  ENDGAME
 }

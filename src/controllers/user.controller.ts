@@ -119,22 +119,12 @@ export const fetchUserById = async (
   try {
     const { id } = request.user!;
 
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: { id: true, username: true },
+    });
 
     return response.status(200).json({ user });
-  } catch (error) {
-    return response.status(500).json({ error });
-  }
-};
-
-export const fetchAllUsers = async (
-  request: IAuthenticatedRequest,
-  response: Response
-) => {
-  try {
-    const allUsers = await prisma.user.findMany();
-
-    return response.status(200).json({ allUsers });
   } catch (error) {
     return response.status(500).json({ error });
   }

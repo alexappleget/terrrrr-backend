@@ -1,4 +1,3 @@
-import { WorldRole } from "@prisma/client";
 import { Request } from "express";
 
 export interface IAuthPayload {
@@ -7,6 +6,14 @@ export interface IAuthPayload {
 
 export interface IAuthenticatedRequest extends Request {
   user?: IAuthPayload;
+}
+
+export interface IBoss {
+  id?: string;
+  name: string;
+  health: string;
+  stage: string;
+  worldProgress?: IWorldBossProgress[];
 }
 
 export interface IUserUpdates {
@@ -24,15 +31,6 @@ export interface IUser {
   events?: IEvent[];
   RSVPs?: IEventRSVP[];
   notes?: INote[];
-  buildProgress?: IUserBuildProgress[];
-  killedBosses?: IWorldBossProgress[];
-}
-
-export interface IUserBuildProgress {
-  id: string;
-  userId: string;
-  itemId: string;
-  acquired: boolean;
 }
 
 export interface IEvent {
@@ -63,7 +61,6 @@ export interface IWorldBossProgress {
   id: string;
   bossId: string;
   worldId: string;
-  killedById?: string;
 }
 
 export interface IWorldMembership {
