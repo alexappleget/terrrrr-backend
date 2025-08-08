@@ -86,12 +86,20 @@ export const signIn = async (request: Request, response: Response) => {
 
     const token = jwt.sign(payload, JWT_SECRET);
 
-    response.cookie("token", token, {
+    if (!token) {
+      return response.status(400).json({ message: "No token was created." });
+    }
+
+    const cookie = response.cookie("token", token, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
+
+    if (!cookie) {
+      return response.status(400).json({ message: "No cookie created" });
+    }
 
     return response.status(200).json({ success: true });
   } catch (error) {
