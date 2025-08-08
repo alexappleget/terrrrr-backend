@@ -101,6 +101,10 @@ export const getUserWorlds = async (
   try {
     const { id } = request.user!;
 
+    if (!id) {
+      return response.status(400).json({ message: "UserId not provided" });
+    }
+
     const userWorldMemberships = await prisma.worldMembership.findMany({
       where: {
         userId: id,
