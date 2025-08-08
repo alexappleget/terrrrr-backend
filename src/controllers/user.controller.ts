@@ -87,7 +87,7 @@ export const signIn = async (request: Request, response: Response) => {
     const token = jwt.sign(payload, JWT_SECRET);
 
     if (!token) {
-      return response.status(400).json({ message: "No token was created." });
+      return response.status(400).json({ error: "No token was created." });
     }
 
     const cookie = response.cookie("token", token, {
@@ -98,7 +98,7 @@ export const signIn = async (request: Request, response: Response) => {
     });
 
     if (!cookie) {
-      return response.status(400).json({ message: "No cookie created" });
+      return response.status(400).json({ error: "No cookie created" });
     }
 
     return response.status(200).json({ success: true });
