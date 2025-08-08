@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { IAuthenticatedRequest, IUserUpdates } from "../types/interface";
-import { JWT_SECRET, prisma } from "../config";
+import { isProduction, JWT_SECRET, prisma } from "../config";
 
 export const signUp = async (request: Request, response: Response) => {
   try {
@@ -38,8 +38,8 @@ export const signUp = async (request: Request, response: Response) => {
 
     response.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -88,8 +88,8 @@ export const signIn = async (request: Request, response: Response) => {
 
     response.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -105,8 +105,8 @@ export const signOut = async (
 ) => {
   response.clearCookie("token", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
   });
 
   return response.status(200).json({ success: true });
