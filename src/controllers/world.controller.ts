@@ -110,11 +110,41 @@ export const getUserWorlds = async (
         userId: id,
       },
       include: {
-        world: true,
+        world: {
+          include: {
+            _count: {
+              select: { memberships: true },
+            },
+          },
+        },
       },
     });
 
     return response.status(200).json({ userWorldMemberships });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};
+
+export const getAdminData = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+
+    const adminData = await prisma.world.findUnique({
+      where: { id },
+      include: {
+        joinCode: true,
+        memberships: true,
+        bosses: true,
+        notes: true,
+        events: true,
+      },
+    });
+
+    return response.status(200).json({ adminData });
   } catch (error) {
     return response.status(500).json({ error });
   }
