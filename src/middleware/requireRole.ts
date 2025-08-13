@@ -12,17 +12,17 @@ export const requireRole = (roles: string[] | string) => {
 
     if (!userRole || typeof userRole !== "string") {
       return response
-        .status(400)
+        .status(401)
         .json({ error: "Unauthorized: No role found." });
     }
 
     if (Array.isArray(roles)) {
       if (!roles.includes(userRole)) {
-        return response.status(400).json({ error: "Unauthorized" });
+        return response.status(403).json({ error: "Unauthorized" });
       }
     } else {
       if (userRole !== roles) {
-        return response.status(400).json({ error: "Unauthorized" });
+        return response.status(403).json({ error: "Unauthorized" });
       }
     }
 
