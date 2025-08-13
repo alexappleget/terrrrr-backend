@@ -155,3 +155,30 @@ export const getAdminData = async (
     return response.status(500).json({ error });
   }
 };
+
+export const updateWorldDetails = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+    const { name, description, code } = request.body;
+
+    await prisma.world.update({
+      where: { id },
+      data: {
+        name,
+        description,
+      },
+    });
+
+    await prisma.joinCode.update({
+      where: { worldId: id },
+      data: { code },
+    });
+
+    return response.status(200).json({ success: true });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};

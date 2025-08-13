@@ -4,6 +4,7 @@ import {
   getAdminData,
   getUserWorlds,
   joinWorld,
+  updateWorldDetails,
 } from "../controllers/world.controller";
 import { requireAuth } from "../middleware/requireAuth";
 
@@ -14,5 +15,7 @@ router.post("/join", requireAuth, joinWorld);
 
 router.get("/", requireAuth, getUserWorlds);
 router.get("/adminData/:id", requireAuth, getAdminData);
+
+router.patch("/:id", requireAuth, updateWorldDetails);
 
 export default router;
