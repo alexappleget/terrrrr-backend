@@ -55,3 +55,29 @@ export const getWorldMembership = async (
     return response.status(500).json({ error });
   }
 };
+
+export const updateMemberRole = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id: worldId } = request.params;
+    const { role, userId } = request.body;
+
+    await prisma.worldMembership.update({
+      where: {
+        userId_worldId: {
+          userId,
+          worldId,
+        },
+      },
+      data: {
+        role,
+      },
+    });
+
+    return response.status(200).json({ success: true });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};

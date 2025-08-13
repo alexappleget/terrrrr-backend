@@ -110,11 +110,74 @@ export const getUserWorlds = async (
         userId: id,
       },
       include: {
-        world: true,
+        world: {
+          include: {
+            _count: {
+              select: { memberships: true },
+            },
+          },
+        },
       },
     });
 
     return response.status(200).json({ userWorldMemberships });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};
+
+export const getAdminData = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+
+    const adminData = await prisma.world.findUnique({
+      where: { id },
+      include: {
+        joinCode: true,
+        memberships: {
+          include: {
+            user: {
+              select: { username: true },
+            },
+          },
+        },
+        bosses: true,
+        notes: true,
+        events: true,
+      },
+    });
+
+    return response.status(200).json({ adminData });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};
+
+export const updateWorldDetails = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+    const { name, description, code } = request.body;
+
+    await prisma.world.update({
+      where: { id },
+      data: {
+        name,
+        description,
+      },
+    });
+
+    await prisma.joinCode.update({
+      where: { worldId: id },
+      data: { code },
+    });
+
+    return response.status(200).json({ success: true });
   } catch (error) {
     return response.status(500).json({ error });
   }
