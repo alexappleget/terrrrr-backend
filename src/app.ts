@@ -9,6 +9,7 @@ import eventRoutes from "./routes/event.routes";
 import membershipRoutes from "./routes/worldMembership.routes";
 import noteRoutes from "./routes/note.routes";
 import { FRONTEND_URL, PORT } from "./config";
+import { seed } from "./seed";
 
 const app = express();
 
@@ -33,4 +34,7 @@ app.use("/api/world", worldRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on Port: ${PORT}`);
+  if (process.env.NODE_ENV !== "production") {
+    seed();
+  }
 });

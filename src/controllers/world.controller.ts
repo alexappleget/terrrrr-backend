@@ -137,7 +137,13 @@ export const getAdminData = async (
       where: { id },
       include: {
         joinCode: true,
-        memberships: true,
+        memberships: {
+          include: {
+            user: {
+              select: { username: true },
+            },
+          },
+        },
         bosses: true,
         notes: true,
         events: true,
