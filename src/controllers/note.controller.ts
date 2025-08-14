@@ -57,7 +57,6 @@ export const deleteNote = async (
 ) => {
   try {
     const { id } = request.params;
-    console.log("Note id is:", id);
 
     await prisma.note.delete({
       where: { id },
