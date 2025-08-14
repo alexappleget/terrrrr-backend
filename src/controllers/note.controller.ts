@@ -9,7 +9,7 @@ export const createNote = async (
   try {
     const { id: worldId } = request.params;
     const { id: userId } = request.user!;
-    const { title, content } = request.body;
+    const { title, content, tag } = request.body;
 
     await prisma.note.create({
       data: {
@@ -17,6 +17,7 @@ export const createNote = async (
         content,
         authorId: userId,
         worldId,
+        tag,
       },
     });
 
@@ -45,6 +46,24 @@ export const getWorldNotes = async (
     });
 
     return response.status(200).json({ notes });
+  } catch (error) {
+    return response.status(500).json({ error });
+  }
+};
+
+export const deleteNote = async (
+  request: IAuthenticatedRequest,
+  response: Response
+) => {
+  try {
+    const { id } = request.params;
+    console.log("Note id is:", id);
+
+    await prisma.note.delete({
+      where: { id },
+    });
+
+    return response.status(200).json({ success: true });
   } catch (error) {
     return response.status(500).json({ error });
   }
