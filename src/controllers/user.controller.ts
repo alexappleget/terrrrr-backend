@@ -37,7 +37,6 @@ export const signUp = async (request: Request, response: Response) => {
     const token = jwt.sign(payload, JWT_SECRET);
 
     response.cookie("token", token, {
-      domain: ".onrender.com",
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
@@ -92,7 +91,6 @@ export const signIn = async (request: Request, response: Response) => {
     }
 
     const cookie = response.cookie("token", token, {
-      domain: ".onrender.com",
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
@@ -114,7 +112,6 @@ export const signOut = async (
   response: Response
 ) => {
   response.clearCookie("token", {
-    domain: ".onrender.com",
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? "none" : "lax",
