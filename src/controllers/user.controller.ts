@@ -34,7 +34,7 @@ export const signUp = async (request: Request, response: Response) => {
       id: user.id,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "15m" });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "15min" });
     const refreshToken = crypto.randomBytes(64).toString("hex");
 
     await prisma.user.update({
