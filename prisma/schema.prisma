@@ -12,6 +12,7 @@ model User {
   username String @unique
   password String
   salt String
+  refreshToken String?
   createdAt DateTime @default(now())
   memberships WorldMembership[]
   events Event[]

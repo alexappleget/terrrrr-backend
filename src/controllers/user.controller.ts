@@ -34,9 +34,24 @@ export const signUp = async (request: Request, response: Response) => {
       id: user.id,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET);
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "15min" });
+    const refreshToken = crypto.randomBytes(64).toString("hex");
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        refreshToken,
+      },
+    });
 
     response.cookie("token", token, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    response.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
@@ -84,22 +99,29 @@ export const signIn = async (request: Request, response: Response) => {
       id: user.id,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET);
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "15min" });
+    const refreshToken = crypto.randomBytes(64).toString("hex");
 
-    if (!token) {
-      return response.status(400).json({ error: "No token was created." });
-    }
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        refreshToken,
+      },
+    });
 
-    const cookie = response.cookie("token", token, {
+    response.cookie("token", token, {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    if (!cookie) {
-      return response.status(400).json({ error: "No cookie created" });
-    }
+    response.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     return response.status(200).json({ success: true });
   } catch (error) {
@@ -111,10 +133,25 @@ export const signOut = async (
   request: IAuthenticatedRequest,
   response: Response
 ) => {
+  const { id } = request.user!;
+
   response.clearCookie("token", {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? "none" : "lax",
+  });
+
+  response.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+  });
+
+  await prisma.user.update({
+    where: { id },
+    data: {
+      refreshToken: null,
+    },
   });
 
   return response.status(200).json({ success: true });
