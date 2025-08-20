@@ -31,7 +31,7 @@ Retrieves all bosses for a given world, including their progress.
 
 **Flow:**
 
-1. Extracts the `id` parameter from the request (world ID).
+1. Extracts the `id` parameter from the request at the endpoint `/api/boss/:id` (where `id` is the world ID).
 2. Queries the database for all bosses, including their progress for the specified world.
 3. Maps the results to include only the relevant progress for each boss.
 4. Returns a JSON response with the list of bosses and their progress.
@@ -42,7 +42,7 @@ Updates the killed state of a specific world boss.
 
 **Flow:**
 
-1. Extracts the `id` parameter from the request (progress ID).
+1. Extracts the `id` parameter from the request at the endpoint `/api/boss/:id` (where `id` is the progress ID).
 2. Reads the `killed` value from the request body.
 3. Updates the killed state in the database for the specified boss progress.
 4. Returns a success response.
@@ -98,7 +98,7 @@ GET /api/boss/:id
 **Request:**
 
 ```http
-POST /api/boss/progress/:id
+PATCH /api/boss/:id
 Content-Type: application/json
 
 {
