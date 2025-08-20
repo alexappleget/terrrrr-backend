@@ -1,5 +1,19 @@
 # Auth Controller Documentation
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Functions](#key-functions)
+  - [session](#session)
+  - [refresh](#refresh)
+- [Error Handling & Security Considerations](#error-handling--security-considerations)
+- [Example Requests & Responses](#example-requests--responses)
+  - [Session Endpoint](#session-endpoint)
+  - [Refresh Endpoint](#refresh-endpoint)
+- [Usage Instructions](#usage-instructions)
+- [Dependencies](#dependencies)
+- [Troubleshooting](#troubleshooting)
+
 ## Overview
 
 The `auth.controller.ts` file handles user authentication using **JWT tokens** and **refresh tokens**. Authentication is handled via **httpOnly cookies** to improve security and prevent XSS attacks.
