@@ -23,7 +23,7 @@ Rotates the JWT and refresh token, issuing new tokens.
 
 **Flow:**
 
-1. Retrieves the **refresh token** from a seperate httpOnly cookie.
+1. Retrieves the **refresh token** from a separate httpOnly cookie.
 2. Checks if the refresh token exists and whether it **matches the token stored in the database** for that user.
 3. If valid:
    - Generates a new JWT token (expires every 15 minutes).
@@ -144,12 +144,12 @@ or
 4. **Sign Out:**
    To log out, clear both `token` and `refreshToken` cookies on the client side.
 
-## Dependdencies
+## Dependencies
 
 - **express**: Handles HTTP requests and responses.
 - **jsonwebtoken**: Used for creating and verifying JWT tokens.
 - **crypto**: Generates secure random refresh tokens.
-- **prisma**: ORM for postgreSQL database opertaions.
+- **prisma**: ORM for PostgreSQL database operations.
 
 ## Troubleshooting
 
