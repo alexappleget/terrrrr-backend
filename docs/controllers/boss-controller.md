@@ -95,6 +95,9 @@ GET /api/boss/:id
 2. **Update Boss State:**
    Use `PATCH /api/boss/:id` with a JSON body `{ "killed": true|false }` to update the killed state of a boss.
 
+> **Note:**
+> In all routes, `:id` refers to the `worldId` parameter. Replace `:id` with the actual world ID you want to query or update.
+
 ## Dependencies
 
 - **express**: Handles HTTP requests and responses.
