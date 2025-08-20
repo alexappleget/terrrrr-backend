@@ -18,6 +18,11 @@
 
 The `boss.controller.ts` file manages world boss data and their progress states. It provides endpoints to retrieve all bosses for a world and to update the killed state of a boss.
 
+> **Note:**
+> All boss routes use the `requireAuth` middleware to ensure the user is authenticated.
+> The `PATCH /api/boss/:id` route also uses `requireRole` to restrict access to users with the roles: OWNER, ADMIN, or SUB_ADMIN.
+> For more details, see the [requireAuth](../middleware/requireAuth.md) and [requireRole](../middleware/requireRole.md) documentation.
+
 ## Key Functions
 
 ### `getWorldBosses`
@@ -75,6 +80,37 @@ GET /api/boss/:id
     }
     // ...more bosses
   ]
+}
+```
+
+**Error Response:**
+
+```json
+{
+  "error": "Error details"
+}
+```
+
+---
+
+### Set Boss Killed State
+
+**Request:**
+
+```http
+POST /api/boss/progress/:id
+Content-Type: application/json
+
+{
+  "killed": true | false
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
 }
 ```
 
