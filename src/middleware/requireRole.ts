@@ -18,11 +18,11 @@ export const requireRole = (roles: string[] | string) => {
 
     if (Array.isArray(roles)) {
       if (!roles.includes(userRole)) {
-        return response.status(403).json({ error: "Unauthorized" });
+        return response.status(401).json({ error: "Unauthorized" });
       }
     } else {
       if (userRole !== roles) {
-        return response.status(403).json({ error: "Unauthorized" });
+        return response.status(401).json({ error: "Unauthorized" });
       }
     }
 

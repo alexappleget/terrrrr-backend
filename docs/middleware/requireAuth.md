@@ -32,3 +32,4 @@ router.get("/protected", requireAuth, functionName); // Only accessible if authe
 
 - **express**: Handles HTTP requests and responses.
 - **jsonwebtoken**: Used for creating and verifying JWT tokens.
+- **IAuthenticatedRequest && IAuthPayload**: Custom types for authenticated requests.
