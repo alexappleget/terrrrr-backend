@@ -160,7 +160,7 @@ or
 
 ## Dependencies
 
-- **express**: Handles HTTP requests and responses.
-- **jsonwebtoken**: Used for creating and verifying JWT tokens.
-- **crypto**: Generates secure random refresh tokens.
-- **prisma**: ORM for PostgreSQL database operations.
+- **Express**: Handles HTTP requests and responses.
+- **Jsonwebtoken**: Used for creating and verifying JWT tokens.
+- **Crypto**: Generates secure random refresh tokens.
+- **Prisma**: ORM for PostgreSQL database operations.

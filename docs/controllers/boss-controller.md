@@ -133,5 +133,5 @@ Content-Type: application/json
 
 ## Dependencies
 
-- **express**: Handles HTTP requests and responses.
-- **prisma**: ORM for PostgreSQL database operations.
+- **Express**: Handles HTTP requests and responses.
+- **Prisma**: ORM for PostgreSQL database operations.

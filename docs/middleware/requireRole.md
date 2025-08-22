@@ -38,7 +38,7 @@ router.get("/admin-route", requireAuth, requireRole(["OWNER", "ADMIN"]));
 
 ## Dependencies
 
-- **express**: Handles HTTP requests and responses.
+- **Express**: Handles HTTP requests and responses.
 - **IAuthenticatedRequest**: Custom type for authenticated requests.
 
 ## Notes
