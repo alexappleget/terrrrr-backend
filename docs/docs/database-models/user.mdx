@@ -1,10 +1,10 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
-# Note
+# User
 
-The **Note** model represents notes created by users within worlds. Notes can be used for strategies, reminders, or any information relevant to a world.
+The **User** model represents an individual account in the Terrrrr backend. Users can create worlds, join worlds, participate in events, RSVP to events, and author notes.
 
 ## Fields
 
@@ -22,82 +22,85 @@ The **Note** model represents notes created by users within worlds. Notes can be
       <td>id</td>
       <td>String</td>
       <td>@id, @default(cuid())</td>
-      <td>Unique note ID</td>
+      <td>Unique user ID</td>
     </tr>
     <tr>
-      <td>title</td>
+      <td>username</td>
+      <td>String</td>
+      <td>@unique</td>
+      <td>User's unique username</td>
+    </tr>
+    <tr>
+      <td>password</td>
       <td>String</td>
       <td></td>
-      <td>Title of the note</td>
+      <td>Hashed password</td>
     </tr>
     <tr>
-      <td>content</td>
+      <td>salt</td>
       <td>String</td>
       <td></td>
-      <td>Content of the note</td>
+      <td>Salt used for password hashing</td>
     </tr>
     <tr>
-      <td>tag</td>
-      <td>String</td>
+      <td>refreshToken</td>
+      <td>String?</td>
       <td></td>
-      <td>Tag or category for the note</td>
-    </tr>
-    <tr>
-      <td>authorId</td>
-      <td>String</td>
-      <td></td>
-      <td>ID of the user who authored the note</td>
-    </tr>
-    <tr>
-      <td>author</td>
-      <td>User</td>
-      <td>@relation</td>
-      <td>The user who authored the note</td>
-    </tr>
-    <tr>
-      <td>worldId</td>
-      <td>String</td>
-      <td></td>
-      <td>ID of the world the note belongs to</td>
-    </tr>
-    <tr>
-      <td>world</td>
-      <td>World</td>
-      <td>@relation</td>
-      <td>The world associated with the note</td>
+      <td>Refresh token for session management (optional)</td>
     </tr>
     <tr>
       <td>createdAt</td>
       <td>DateTime</td>
       <td>@default(now())</td>
-      <td>Timestamp when the note was created</td>
+      <td>Timestamp when the user was created</td>
+    </tr>
+    <tr>
+      <td>memberships</td>
+      <td>WorldMembership[]</td>
+      <td>@relation</td>
+      <td>Worlds the user is a member of</td>
+    </tr>
+    <tr>
+      <td>events</td>
+      <td>Event[]</td>
+      <td>@relation</td>
+      <td>Events created by the user</td>
+    </tr>
+    <tr>
+      <td>RSVPs</td>
+      <td>EventRSVP[]</td>
+      <td>@relation</td>
+      <td>Events the user has RSVP’d to</td>
+    </tr>
+    <tr>
+      <td>notes</td>
+      <td>Note[]</td>
+      <td>@relation</td>
+      <td>Notes authored by the user</td>
     </tr>
   </tbody>
 </table>
 
 ## Relationships
 
-- **Note** belongs to a **User** (`authorId`).
-- **Note** belongs to a **World** (`worldId`).
+- **User** has many **WorldMemberships** (can join or create worlds).
+- **User** can create many **Events**.
+- **User** can RSVP to many **Events** via **EventRSVP**.
+- **User** can author many **Notes**.
 
 ## Example Record
 
 ```json
 {
-  "id": "note1",
-  "title": "Strategy",
-  "content": "Focus on the east gate first.",
-  "tag": "battle",
-  "authorId": "user123",
-  "worldId": "world123",
+  "id": "user123",
+  "username": "player1",
+  "password": "<hashed>",
+  "salt": "<random_salt>",
+  "refreshToken": "refresh_token_value",
   "createdAt": "2025-09-01T18:00:00.000Z",
-  "author": {
-    "id": "user123",
-    "username": "player1"
-  },
-  "world": {
-    "id": "world123",
-    "name": "Adventure Realm"
-  }
+  "memberships": [{ "worldId": "world123", "role": "OWNER" }],
+  "events": [{ "id": "event1", "name": "Boss Raid" }],
+  "RSVPs": [{ "eventId": "event1" }],
+  "notes": [{ "id": "note1", "title": "Strategy" }]
 }
 ```
