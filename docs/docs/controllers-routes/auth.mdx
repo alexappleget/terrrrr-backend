@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # Auth
 
 The `auth.controller.ts` file handles user authentication using **JWT tokens** and **refresh tokens**. Authentication is handled via **httpOnly cookies** to improve security and prevent XSS attacks.
@@ -18,6 +20,8 @@ Verifies the user's current JWT session.
 2. Checks if the token exists. If not, returns an error.
 3. Verifies the token's validity and checks for expiration.
 4. If the token is expired, it triggers the `refresh` function automatically.
+
+<SwaggerUI url="/openapi/auth/session.yaml" supportedSubmitMethods={[]} />
 
 ### `refresh`
 
@@ -40,6 +44,8 @@ Rotates the JWT and refresh token, issuing new tokens.
 - If the refresh token matches the stored value, a **new JWT** and a **new refresh token** are created.
 - The refresh token in the database is replaced with the new one, and both tokens are sent to the client in **httpOnly cookies**.
 - This rotation ensures that a stolen or reused refresh token cannot be exploited.
+
+<SwaggerUI url="/openapi/auth/refresh.yaml" supportedSubmitMethods={[]} />
 
 ## Routes
 
