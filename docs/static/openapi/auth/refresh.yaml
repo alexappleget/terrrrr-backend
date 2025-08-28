@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/auth/refresh:
+    get:
+      tags:
+        - Auth Refresh
+      summary: Rotates and issues new JWT and refresh tokens
+      description: Uses the httpOnly `refreshToken` cookie to validate the user's session. If valid, issues new JWT and refresh tokens and updates the cookies. The backend reads the refresh token using `request.cookies.refreshToken`.
+      responses:
+        "200":
+          description: Tokens refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "400":
+          description: Missing or invalid refresh token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No refresh token"
+        "401":
+          description: Unauthorized (invalid refresh token)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid refresh token"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
