@@ -59,7 +59,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: "img/terrrrr-social-card.jpg",
+    image: "img/terrrrr-social-card.png",
     navbar: {
       title: "Terrrrr Backend Docs",
       logo: {
