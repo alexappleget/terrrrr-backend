@@ -79,26 +79,6 @@ const config: Config = {
     },
     footer: {
       style: "dark",
-      links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Introduction",
-              to: "/docs/intro",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "GitHub",
-              href: "https://github.com/alexappleget/terrrrr-backend",
-            },
-          ],
-        },
-      ],
       copyright: `Copyright © ${new Date().getFullYear()} Alex Appleget`,
     },
     prism: {
