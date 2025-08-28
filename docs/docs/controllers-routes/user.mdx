@@ -2,6 +2,8 @@
 sidebar_position: 5
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # User
 
 The `user.controller.ts` file manages user accounts, including registration, authentication, sign-out, and profile retrieval. These endpoints allow users to create accounts, log in, log out, and fetch their profile information.
@@ -25,6 +27,8 @@ Registers a new user account.
 5. Generates JWT and refresh tokens, stores the refresh token, and sets both as httpOnly cookies.
 6. Returns a success response.
 
+<SwaggerUI url="/openapi/user/signup.yaml" supportedSubmitMethods={[]} />
+
 ### `signIn`
 
 Authenticates a user and starts a session.
@@ -36,6 +40,8 @@ Authenticates a user and starts a session.
 3. Generates JWT and refresh tokens, stores the refresh token, and sets both as httpOnly cookies.
 4. Returns a success response.
 
+<SwaggerUI url="/openapi/user/signin.yaml" supportedSubmitMethods={[]} />
+
 ### `signOut`
 
 Logs out the authenticated user.
@@ -46,6 +52,8 @@ Logs out the authenticated user.
 2. Removes the refresh token from the database.
 3. Returns a success response.
 
+<SwaggerUI url="/openapi/user/signout.yaml" supportedSubmitMethods={[]} />
+
 ### `fetchUserById`
 
 Fetches the authenticated user's profile.
@@ -55,6 +63,8 @@ Fetches the authenticated user's profile.
 1. Uses the authenticated user's ID from the JWT payload.
 2. Retrieves the user's profile from the database (ID and username).
 3. Returns the user data in the response.
+
+<SwaggerUI url="/openapi/user/fetchUser.yaml" supportedSubmitMethods={[]} />
 
 ## Routes
 

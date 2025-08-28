@@ -1,6 +1,9 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
+import { Configuration } from "webpack";
 import type * as Preset from "@docusaurus/preset-classic";
+import dotenv from "dotenv";
+dotenv.config();
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -85,7 +88,30 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    algolia: {
+      appId: process.env.ALGOLIA_APP_ID,
+      apiKey: process.env.ALGOLIA_API_KEY,
+      indexName: "Backend Documentation for Terrrrr",
+      contextualSearch: true,
+    },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    function webpackBufferFallbackPlugin() {
+      return {
+        name: "webpack-buffer-fallback-plugin",
+        configureWebpack() {
+          return {
+            resolve: {
+              fallback: {
+                buffer: require.resolve("buffer/"),
+              },
+            },
+          };
+        },
+      };
+    },
+  ],
+  stylesheets: ["swagger-ui-react/swagger-ui.css", "/css/custom.css"],
 };
 
 export default config;

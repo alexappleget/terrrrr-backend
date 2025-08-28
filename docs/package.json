@@ -18,10 +18,13 @@
     "@docusaurus/core": "3.8.1",
     "@docusaurus/preset-classic": "3.8.1",
     "@mdx-js/react": "^3.0.0",
+    "buffer": "^6.0.3",
     "clsx": "^2.0.0",
+    "dotenv": "^17.2.1",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "swagger-ui-react": "^5.28.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.8.1",
