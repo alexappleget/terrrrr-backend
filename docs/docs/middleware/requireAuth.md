@@ -1,6 +1,8 @@
-# requireAuth Middleware Documentation
+---
+sidebar_position: 1
+---
 
-## Overview
+# `requireAuth`
 
 The `requireAuth` middleware protects routes by ensuring only authenticated users can access them. If the JWT token in the request cookies is valid, the decoded JWT payload is attached to `request.user` and passed to the next route handler. This allows the route handler to access user information and confirms the request is authenticated.
 

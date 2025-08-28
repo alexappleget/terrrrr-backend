@@ -1,0 +1,229 @@
+---
+sidebar_position: 5
+---
+
+# User
+
+The `user.controller.ts` file manages user accounts, including registration, authentication, sign-out, and profile retrieval. These endpoints allow users to create accounts, log in, log out, and fetch their profile information.
+
+> **Note:**
+> Some user routes use the `requireAuth` middleware to ensure the user is authenticated.
+> For more details, see the [requireAuth](../middleware/requireAuth) documentation.
+
+## Key Functions
+
+### `signUp`
+
+Registers a new user account.
+
+**Flow:**
+
+1. Reads `username` and `password` from the request body.
+2. Checks if the username already exists.
+3. Hashes the password with a randomly generated salt.
+4. Creates the user in the database.
+5. Generates JWT and refresh tokens, stores the refresh token, and sets both as httpOnly cookies.
+6. Returns a success response.
+
+### `signIn`
+
+Authenticates a user and starts a session.
+
+**Flow:**
+
+1. Reads `username` and `password` from the request body.
+2. Verifies credentials by hashing and comparing the password.
+3. Generates JWT and refresh tokens, stores the refresh token, and sets both as httpOnly cookies.
+4. Returns a success response.
+
+### `signOut`
+
+Logs out the authenticated user.
+
+**Flow:**
+
+1. Clears the `token` and `refreshToken` cookies.
+2. Removes the refresh token from the database.
+3. Returns a success response.
+
+### `fetchUserById`
+
+Fetches the authenticated user's profile.
+
+**Flow:**
+
+1. Uses the authenticated user's ID from the JWT payload.
+2. Retrieves the user's profile from the database (ID and username).
+3. Returns the user data in the response.
+
+## Routes
+
+The following routes are defined in `user.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Description</th>
+      <th>Controller Function</th>
+      <th>Middleware</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/user/signup</td>
+      <td>Register a new user</td>
+      <td>
+        <code>signUp</code>
+      </td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/user/signin</td>
+      <td>Sign in and receive tokens</td>
+      <td>
+        <code>signIn</code>
+      </td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/user/signout</td>
+      <td>Sign out user</td>
+      <td>
+        <code>signOut</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/user/fetchUserById</td>
+      <td>Get authenticated user's profile</td>
+      <td>
+        <code>fetchUserById</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Error Handling
+
+- Returns `400 Bad Request` for missing or invalid credentials.
+- Returns `500 Internal Server Error` for unexpected errors.
+
+## Example Requests & Responses
+
+### Sign Up
+
+**Request:**
+
+```http
+POST /api/user/signup
+Content-Type: application/json
+
+{
+  "username": "player1",
+  "password": "securepassword"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+### Sign In
+
+**Request:**
+
+```http
+POST /api/user/signin
+Content-Type: application/json
+
+{
+  "username": "player1",
+  "password": "securepassword"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+### Fetch User By ID
+
+**Request:**
+
+```http
+GET /api/user/fetchUserById
+Cookie: token=<JWT_TOKEN>
+```
+
+**Successful Response:**
+
+```json
+{
+  "user": {
+    "id": "user123",
+    "username": "player1"
+  }
+}
+```
+
+---
+
+### Sign Out
+
+**Request:**
+
+```http
+POST /api/user/signout
+Cookie: token=<JWT_TOKEN>; refreshToken=<REFRESH_TOKEN>
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+## Usage Instructions
+
+1. **Register:**  
+   Use `POST /api/user/signup` to create a new user account.
+2. **Sign In:**  
+   Use `POST /api/user/signin` to authenticate and receive tokens.
+3. **Fetch Profile:**  
+   Use `GET /api/user/fetchUserById` to retrieve your profile (requires authentication).
+4. **Sign Out:**  
+   Use `POST /api/user/signout` to log out and clear session cookies.
+
+## Dependencies
+
+- **Express**: Handles HTTP requests and responses.
+- **Prisma**: ORM for database operations.
+- **Jsonwebtoken**: For JWT token creation and verification.
+- **Crypto**: For password hashing and token

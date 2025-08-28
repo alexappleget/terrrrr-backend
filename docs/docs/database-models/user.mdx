@@ -1,0 +1,106 @@
+---
+sidebar_position: 7
+---
+
+# User
+
+The **User** model represents an individual account in the Terrrrr backend. Users can create worlds, join worlds, participate in events, RSVP to events, and author notes.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique user ID</td>
+    </tr>
+    <tr>
+      <td>username</td>
+      <td>String</td>
+      <td>@unique</td>
+      <td>User's unique username</td>
+    </tr>
+    <tr>
+      <td>password</td>
+      <td>String</td>
+      <td></td>
+      <td>Hashed password</td>
+    </tr>
+    <tr>
+      <td>salt</td>
+      <td>String</td>
+      <td></td>
+      <td>Salt used for password hashing</td>
+    </tr>
+    <tr>
+      <td>refreshToken</td>
+      <td>String?</td>
+      <td></td>
+      <td>Refresh token for session management (optional)</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>DateTime</td>
+      <td>@default(now())</td>
+      <td>Timestamp when the user was created</td>
+    </tr>
+    <tr>
+      <td>memberships</td>
+      <td>WorldMembership[]</td>
+      <td>@relation</td>
+      <td>Worlds the user is a member of</td>
+    </tr>
+    <tr>
+      <td>events</td>
+      <td>Event[]</td>
+      <td>@relation</td>
+      <td>Events created by the user</td>
+    </tr>
+    <tr>
+      <td>RSVPs</td>
+      <td>EventRSVP[]</td>
+      <td>@relation</td>
+      <td>Events the user has RSVP’d to</td>
+    </tr>
+    <tr>
+      <td>notes</td>
+      <td>Note[]</td>
+      <td>@relation</td>
+      <td>Notes authored by the user</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **User** has many **WorldMemberships** (can join or create worlds).
+- **User** can create many **Events**.
+- **User** can RSVP to many **Events** via **EventRSVP**.
+- **User** can author many **Notes**.
+
+## Example Record
+
+```json
+{
+  "id": "user123",
+  "username": "player1",
+  "password": "<hashed>",
+  "salt": "<random_salt>",
+  "refreshToken": "refresh_token_value",
+  "createdAt": "2025-09-01T18:00:00.000Z",
+  "memberships": [{ "worldId": "world123", "role": "OWNER" }],
+  "events": [{ "id": "event1", "name": "Boss Raid" }],
+  "RSVPs": [{ "eventId": "event1" }],
+  "notes": [{ "id": "note1", "title": "Strategy" }]
+}
+```

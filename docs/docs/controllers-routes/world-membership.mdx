@@ -1,0 +1,194 @@
+---
+sidebar_position: 7
+---
+
+# World Membership
+
+The `worldMembership.controller.ts` file manages user memberships within worlds, including retrieving all members, fetching a user's membership, and updating member roles. These endpoints allow for viewing and managing world membership and roles.
+
+> **Note:**
+> All world membership routes use the `requireAuth` middleware to ensure the user is authenticated.
+> The `PATCH /api/membership/:id` route also uses the `requireRole` middleware to restrict access to users with the OWNER role.
+> For more details, see the [requireAuth](../middleware/requireAuth) and [requireRole](../middleware/requireRole) documentation.
+
+## Key Functions
+
+### `getAllMemberships`
+
+Retrieves all members of a specific world, including their usernames and the world's join code.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at `/api/membership/all/:id` (where `id` is the world ID).
+2. Queries the database for all memberships in the specified world, including usernames.
+3. Retrieves the join code for the world.
+4. Returns a JSON response with the join code and member list.
+
+### `getWorldMembership`
+
+Retrieves the authenticated user's membership for a specific world.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at `/api/membership/:id` (where `id` is the world ID).
+2. Uses the authenticated user's ID from the JWT payload.
+3. Queries the database for the user's membership in the specified world, including world details.
+4. Returns a JSON response with the membership data.
+
+### `updateMemberRole`
+
+Updates the role of a member in a specific world (OWNER only).
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at `/api/membership/:id` (where `id` is the world ID).
+2. Reads `role` and `userId` from the request body.
+3. Updates the member's role in the database.
+4. Returns a success response.
+
+## Routes
+
+The following routes are defined in `worldMembership.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Description</th>
+      <th>Controller Function</th>
+      <th>Middleware</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/api/membership/all/:id</td>
+      <td>Get all members and join code for a world</td>
+      <td>
+        <code>getAllMemberships</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/membership/:id</td>
+      <td>Get authenticated user's membership for a world</td>
+      <td>
+        <code>getWorldMembership</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/membership/:id</td>
+      <td>Update a member's role in a world</td>
+      <td>
+        <code>updateMemberRole</code>
+      </td>
+      <td>
+        <code>requireAuth, requireRole("OWNER")</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Error Handling
+
+- Returns `400 Bad Request` for missing or invalid data.
+- Returns `403 Forbidden` if the user is not authorized to update roles.
+- Returns `500 Internal Server Error` for unexpected errors.
+
+## Example Requests & Responses
+
+### Get All Memberships
+
+**Request:**
+
+```http
+GET /api/membership/all/world123
+Cookie: token=<JWT_TOKEN>
+```
+
+**Successful Response:**
+
+```json
+{
+  "code": { "code": "abc123" },
+  "members": [
+    { "user": { "username": "player1" } },
+    { "user": { "username": "player2" } }
+    // ...more members
+  ]
+}
+```
+
+---
+
+### Get World Membership
+
+**Request:**
+
+```http
+GET /api/membership/world123
+Cookie: token=<JWT_TOKEN>
+```
+
+**Successful Response:**
+
+```json
+{
+  "membership": {
+    "role": "MEMBER",
+    "world": {
+      "id": "world123",
+      "name": "Adventure Realm"
+    }
+  }
+}
+```
+
+---
+
+### Update Member Role
+
+**Request:**
+
+```http
+PATCH /api/membership/world123
+Content-Type: application/json
+Cookie: token=<JWT_TOKEN>
+
+{
+  "userId": "user456",
+  "role": "ADMIN"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+## Usage Instructions
+
+1. **View All Members:**  
+   Use `GET /api/membership/all/:id` to see all members and the join code for a world.
+2. **View Your Membership:**  
+   Use `GET /api/membership/:id` to see your membership details for a world.
+3. **Update Member Role:**  
+   Use `PATCH /api/membership/:id` to change a member's role (OWNER only).
+
+## Dependencies
+
+- **Express**: Handles HTTP requests and responses.
+- **Prisma**: ORM for database

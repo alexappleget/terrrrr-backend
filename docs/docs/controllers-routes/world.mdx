@@ -1,0 +1,308 @@
+---
+sidebar_position: 6
+---
+
+# World
+
+The `world.controller.ts` file manages worlds, including creation, joining, retrieving user worlds, admin data, and updating world details. These endpoints allow users to interact with worlds and manage their membership and settings.
+
+> **Note:**
+> All world routes use the `requireAuth` middleware to ensure the user is authenticated.
+> Some routes also use the `requireRole` middleware to restrict access to users with specific roles (OWNER, ADMIN, SUB_ADMIN).
+> For more details, see the [requireAuth](../middleware/requireAuth) and [requireRole](../middleware/requireRole) documentation.
+
+## Key Functions
+
+### `createWorld`
+
+Creates a new world and assigns the creator as OWNER.
+
+**Flow:**
+
+1. Reads `name` and `description` from the request body.
+2. Generates a unique join code.
+3. Creates the world in the database with the join code.
+4. Assigns the authenticated user as OWNER via a membership record.
+5. Initializes boss progress for the world.
+6. Returns the new world's ID.
+
+### `joinWorld`
+
+Allows a user to join a world using a join code.
+
+**Flow:**
+
+1. Reads `code` from the request body.
+2. Finds the world associated with the join code.
+3. Checks if the user is already a member.
+4. Adds the user as a MEMBER if not already joined.
+5. Returns the world's ID.
+
+### `getUserWorlds`
+
+Retrieves all worlds the authenticated user is a member of.
+
+**Flow:**
+
+1. Uses the authenticated user's ID.
+2. Finds all world memberships for the user.
+3. Includes world details and membership count.
+4. Returns the list of user world memberships.
+
+### `getAdminData`
+
+Retrieves admin data for a specific world.
+
+**Flow:**
+
+1. Extracts the world ID from the request parameters.
+2. Finds the world and includes join code, memberships (with usernames), bosses, notes, and events.
+3. Returns the admin data.
+
+### `updateWorldDetails`
+
+Updates the name, description, and join code for a world.
+
+**Flow:**
+
+1. Extracts the world ID from the request parameters.
+2. Reads `name`, `description`, and `code` from the request body.
+3. Updates the world and join code in the database.
+4. Returns a success response.
+
+## Routes
+
+The following routes are defined in `world.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Description</th>
+      <th>Controller Function</th>
+      <th>Middleware</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/world/create</td>
+      <td>Create a new world</td>
+      <td>
+        <code>createWorld</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/world/join</td>
+      <td>Join a world using a join code</td>
+      <td>
+        <code>joinWorld</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/world/</td>
+      <td>Get worlds for authenticated user</td>
+      <td>
+        <code>getUserWorlds</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/world/adminData/:id</td>
+      <td>Get admin data for a world</td>
+      <td>
+        <code>getAdminData</code>
+      </td>
+      <td>
+        <code>requireAuth, requireRole(["OWNER", "ADMIN", "SUB_ADMIN"])</code>
+      </td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/world/:id</td>
+      <td>Update world details</td>
+      <td>
+        <code>updateWorldDetails</code>
+      </td>
+      <td>
+        <code>requireAuth, requireRole("OWNER")</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Error Handling
+
+- Returns `400 Bad Request` for missing or invalid data (e.g., join code not found, already a member).
+- Returns `500 Internal Server Error` for unexpected errors.
+
+## Example Requests & Responses
+
+### Create World
+
+**Request:**
+
+```http
+POST /api/world/create
+Content-Type: application/json
+
+{
+  "name": "Adventure Realm",
+  "description": "A world for epic quests."
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "worldId": "world123"
+}
+```
+
+---
+
+### Join World
+
+**Request:**
+
+```http
+POST /api/world/join
+Content-Type: application/json
+
+{
+  "code": "abc123"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "worldId": "world123"
+}
+```
+
+---
+
+### Get User Worlds
+
+**Request:**
+
+```http
+GET /api/world/
+Cookie: token=<JWT_TOKEN>
+```
+
+**Successful Response:**
+
+```json
+{
+  "userWorldMemberships": [
+    {
+      "role": "OWNER",
+      "world": {
+        "id": "world123",
+        "name": "Adventure Realm",
+        "description": "A world for epic quests.",
+        "_count": { "memberships": 5 }
+      }
+    }
+    // ...more memberships
+  ]
+}
+```
+
+---
+
+### Get Admin Data
+
+**Request:**
+
+```http
+GET /api/world/adminData/world123
+Cookie: token=<JWT_TOKEN>
+```
+
+**Successful Response:**
+
+```json
+{
+  "adminData": {
+    "id": "world123",
+    "name": "Adventure Realm",
+    "joinCode": { "code": "abc123" },
+    "memberships": [
+      { "user": { "username": "player1" }, "role": "OWNER" }
+      // ...more members
+    ],
+    "bosses": [
+      /* ... */
+    ],
+    "notes": [
+      /* ... */
+    ],
+    "events": [
+      /* ... */
+    ]
+  }
+}
+```
+
+---
+
+### Update World Details
+
+**Request:**
+
+```http
+PATCH /api/world/world123
+Content-Type: application/json
+
+{
+  "name": "Adventure Realm Updated",
+  "description": "A world for epic quests and battles.",
+  "code": "def456"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+## Usage Instructions
+
+1. **Create a World:**  
+   Use `POST /api/world/create` to create a new world.
+2. **Join a World:**  
+   Use `POST /api/world/join` with a join code to join an existing world.
+3. **View Your Worlds:**  
+   Use `GET /api/world/` to see all worlds you are a member of.
+4. **Get Admin Data:**  
+   Use `GET /api/world/adminData/:id` for detailed world info (requires OWNER, ADMIN, or SUB_ADMIN role).
+5. **Update World Details:**  
+   Use `PATCH /api/world/:id` to update world info (requires OWNER role).
+
+## Dependencies
+
+- **Express**: Handles HTTP requests and responses.
+- **Prisma**: ORM for database operations.
+- **Crypto**: For join code

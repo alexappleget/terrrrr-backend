@@ -1,27 +1,15 @@
-# Boss Controller Documentation
+---
+sidebar_position: 2
+---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Key Functions](#key-functions)
-  - [getWorldBosses](#getworldbosses)
-  - [setBossKilledState](#setbosskilledstate)
-- [Error Handling](#error-handling)
-- [Example Requests & Responses](#example-requests--responses)
-  - [Get World Bosses](#get-world-bosses)
-  - [Set Boss Killed State](#set-boss-killed-state)
-- [Usage Instructions](#usage-instructions)
-- [Dependencies](#dependencies)
-- [Troubleshooting](#troubleshooting)
-
-## Overview
+# Boss
 
 The `boss.controller.ts` file manages world boss data and their progress states. It provides endpoints to retrieve all bosses for a world and to update the killed state of a boss.
 
 > **Note:**
 > All boss routes use the `requireAuth` middleware to ensure the user is authenticated.
 > The `PATCH /api/boss/:id` route also uses `requireRole` to restrict access to users with the roles: OWNER, ADMIN, or SUB_ADMIN.
-> For more details, see the [requireAuth](../middleware/requireAuth.md) and [requireRole](../middleware/requireRole.md) documentation.
+> For more details, see the [requireAuth](../middleware/requireAuth) and [requireRole](../middleware/requireRole) documentation.
 
 ## Key Functions
 
@@ -46,6 +34,44 @@ Updates the killed state of a specific world boss.
 2. Reads the `killed` value from the request body.
 3. Updates the killed state in the database for the specified boss progress.
 4. Returns a success response.
+
+## Routes
+
+The following routes are defined in `boss.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Controller Function</th>
+    <th>Middleware</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/api/boss/:id</td>
+      <td>Retrieve all bosses and their progress for a world</td>
+      <td>
+        <code>getWorldBosses</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/boss/:id</td>
+      <td>Update killed state for a boss in a world</td>
+      <td>
+        <code>setBossKilledState</code>
+      </td>
+      <td>
+        <code>requireAuth, requireRole(["OWNER", "ADMIN", "SUB_ADMIN"])</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Error Handling
 

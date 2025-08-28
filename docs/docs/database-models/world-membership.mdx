@@ -1,0 +1,86 @@
+---
+sidebar_position: 10
+---
+
+# WorldMembership
+
+The **WorldMembership** model links users to worlds and assigns them a specific role (OWNER, ADMIN, SUB_ADMIN, MEMBER). This model is essential for managing permissions and access within each world.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique membership ID</td>
+    </tr>
+    <tr>
+      <td>userId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the user in this membership</td>
+    </tr>
+    <tr>
+      <td>user</td>
+      <td>User</td>
+      <td>@relation</td>
+      <td>The user associated with this membership</td>
+    </tr>
+    <tr>
+      <td>worldId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the world in this membership</td>
+    </tr>
+    <tr>
+      <td>world</td>
+      <td>World</td>
+      <td>@relation</td>
+      <td>The world associated with this membership</td>
+    </tr>
+    <tr>
+      <td>role</td>
+      <td>Role</td>
+      <td>@default(MEMBER)</td>
+      <td>The user's role in the world (OWNER, ADMIN, SUB_ADMIN, MEMBER)</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **WorldMembership** belongs to a **User** (`userId`).
+- **WorldMembership** belongs to a **World** (`worldId`).
+
+## Constraints
+
+- Each user can only have one membership per world: `@@unique([userId, worldId])`.
+
+## Example Record
+
+```json
+{
+  "id": "membership1",
+  "userId": "user123",
+  "worldId": "world123",
+  "role": "ADMIN",
+  "user": {
+    "id": "user123",
+    "username": "player1"
+  },
+  "world": {
+    "id": "world123",
+    "name": "Adventure Realm"
+  }
+}
+```
