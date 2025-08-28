@@ -1,0 +1,84 @@
+---
+sidebar_position: 3
+---
+
+# Event
+
+The **Event** model represents scheduled events within a world. Events are created by users and can be joined (RSVP’d) by other users.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique event ID</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td></td>
+      <td>Name of the event</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td></td>
+      <td>Description of the event</td>
+    </tr>
+    <tr>
+      <td>scheduledAt</td>
+      <td>DateTime</td>
+      <td></td>
+      <td>Date and time the event is scheduled</td>
+    </tr>
+    <tr>
+      <td>worldId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the world where the event takes place</td>
+    </tr>
+    <tr>
+      <td>createdById</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the user who created the event</td>
+    </tr>
+    <tr>
+      <td>RSVPs</td>
+      <td>EventRSVP[]</td>
+      <td>@relation</td>
+      <td>RSVP records for users attending the event</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **Event** belongs to a **World** (`worldId`).
+- **Event** is created by a **User** (`createdById`).
+- **Event** has many **EventRSVP** records (users who RSVP’d).
+
+## Example Record
+
+```json
+{
+  "id": "event1",
+  "name": "Boss Raid",
+  "description": "Defeat the world boss together!",
+  "scheduledAt": "2025-09-01T18:00:00.000Z",
+  "worldId": "world123",
+  "createdById": "user456",
+  "RSVPs": [{ "userId": "user789", "eventId": "event1" }]
+}
+```

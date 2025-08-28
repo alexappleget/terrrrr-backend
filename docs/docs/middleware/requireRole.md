@@ -1,6 +1,8 @@
-# requireRole Middleware Documentation
+---
+sidebar_position: 2
+---
 
-## Overview
+# `requireRole`
 
 The `requireRole` middleware restricts access to routes based on user roles. It ensures that only users with the specified role(s) can access the protected route.
 

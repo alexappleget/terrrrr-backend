@@ -1,20 +1,8 @@
-# Auth Controller Documentation
+---
+sidebar_position: 1
+---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Key Functions](#key-functions)
-  - [session](#session)
-  - [refresh](#refresh)
-- [Error Handling & Security Considerations](#error-handling--security-considerations)
-- [Example Requests & Responses](#example-requests--responses)
-  - [Session Endpoint](#session-endpoint)
-  - [Refresh Endpoint](#refresh-endpoint)
-- [Usage Instructions](#usage-instructions)
-- [Dependencies](#dependencies)
-- [Troubleshooting](#troubleshooting)
-
-## Overview
+# Auth
 
 The `auth.controller.ts` file handles user authentication using **JWT tokens** and **refresh tokens**. Authentication is handled via **httpOnly cookies** to improve security and prevent XSS attacks.
 
@@ -52,6 +40,33 @@ Rotates the JWT and refresh token, issuing new tokens.
 - If the refresh token matches the stored value, a **new JWT** and a **new refresh token** are created.
 - The refresh token in the database is replaced with the new one, and both tokens are sent to the client in **httpOnly cookies**.
 - This rotation ensures that a stolen or reused refresh token cannot be exploited.
+
+## Routes
+
+The following routes are defined in `auth.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Controller Function</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/api/auth/session</td>
+      <td>Verifies the user's JWT session</td>
+      <td>`session`</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/auth/refresh</td>
+      <td>Rotates and issues new tokens</td>
+      <td>`refresh`</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Error Handling & Security Considerations
 

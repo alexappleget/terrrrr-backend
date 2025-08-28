@@ -1,0 +1,82 @@
+---
+sidebar_position: 9
+---
+
+# WorldBossProgress
+
+The **WorldBossProgress** model tracks the progress (killed state) of each boss within a specific world. This allows the backend to record which bosses have been defeated in each world.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique progress record ID</td>
+    </tr>
+    <tr>
+      <td>bossId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the boss being tracked</td>
+    </tr>
+    <tr>
+      <td>boss</td>
+      <td>Boss</td>
+      <td>@relation</td>
+      <td>The boss entity for this progress record</td>
+    </tr>
+    <tr>
+      <td>worldId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the world where the boss progress is tracked</td>
+    </tr>
+    <tr>
+      <td>world</td>
+      <td>World</td>
+      <td>@relation</td>
+      <td>The world associated with this boss progress</td>
+    </tr>
+    <tr>
+      <td>killed</td>
+      <td>Boolean</td>
+      <td></td>
+      <td>Whether the boss has been killed in this world</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **WorldBossProgress** belongs to a **Boss** (`bossId`).
+- **WorldBossProgress** belongs to a **World** (`worldId`).
+
+## Example Record
+
+```json
+{
+  "id": "progress1",
+  "bossId": "boss1",
+  "worldId": "world123",
+  "killed": false,
+  "boss": {
+    "id": "boss1",
+    "name": "Dragon Lord"
+  },
+  "world": {
+    "id": "world123",
+    "name": "Adventure Realm"
+  }
+}
+```

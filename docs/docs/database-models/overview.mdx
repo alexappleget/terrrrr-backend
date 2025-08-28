@@ -1,0 +1,106 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+
+This section documents the database models used in the Terrrrr backend, powered by Prisma and PostgreSQL.
+Each model represents a database table, such as users, worlds, bosses, events, and their relationships.
+
+## How Models Relate
+
+- **Boss**: Represents a boss. Boss progress is tracked per world.
+- **Event**: Events scheduled in worlds, created by users.
+- **EventRSVP**: Tracks which users have RSVP'd to which events.
+- **JoinCode**: Unique code for joining a world.
+- **Note**: Notes created by users within worlds.
+- **User**: Represents a user. Users can **create new worlds** or **join existing worlds** via join codes. They can also create events, RSVP to events, and create notes.
+- **World**: Represents a game world. Worlds have members, bosses, notes, and events.
+- **WorldBossProgress**: Tracks the killed state of bosses in worlds.
+- **WorldMembership**: Links users to worlds with a specific role
+
+## Enum: Role
+
+Defines possible roles for world membership:
+
+- `OWNER`: Full control over the world.
+- `ADMIN`: Admin privileges.
+- `SUB_ADMIN`: Limited admin privileges.
+- `MEMBER`: Regular member.
+
+## Relationships Diagram
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Related To</th>
+      <th>Relationship</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>User</td>
+      <td>WorldMembership</td>
+      <td>One user can have many memberships</td>
+    </tr>
+    <tr>
+      <td>World</td>
+      <td>WorldMembership</td>
+      <td>One world can have many memberships</td>
+    </tr>
+    <tr>
+      <td>World</td>
+      <td>JoinCode</td>
+      <td>One world has one join code</td>
+    </tr>
+    <tr>
+      <td>World</td>
+      <td>WorldBossProgress</td>
+      <td>One world can have many boss progress records</td>
+    </tr>
+    <tr>
+      <td>Boss</td>
+      <td>WorldBossProgress</td>
+      <td>One boss can have many progress records (per world)</td>
+    </tr>
+    <tr>
+      <td>World</td>
+      <td>Note</td>
+      <td>One world can have many notes</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>Note</td>
+      <td>One user can author many notes</td>
+    </tr>
+    <tr>
+      <td>World</td>
+      <td>Event</td>
+      <td>One world can have many events</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>Event</td>
+      <td>One user can create many events</td>
+    </tr>
+    <tr>
+      <td>Event</td>
+      <td>EventRSVP</td>
+      <td>One event can have many RSVPs</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>EventRSVP</td>
+      <td>One user can RSVP to many events</td>
+    </tr>
+  </tbody>
+</table>
+
+## Usage Notes
+
+- All IDs are generated using `cuid()` for uniqueness.
+- Unique constraints (e.g., usernames, join codes) ensure data integrity.
+- Prisma is used for querying and managing relationships between models.
+
+---

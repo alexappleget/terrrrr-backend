@@ -1,0 +1,189 @@
+---
+sidebar_position: 4
+---
+
+# Note
+
+The `note.controller.ts` file manages notes within worlds, including creation, retrieval, and deletion. These endpoints allow users to add, view, and remove notes in a specific world.
+
+> **Note:**
+> All note routes use the `requireAuth` middleware to ensure the user is authenticated.
+> The `DELETE /api/note/:id` route also uses the `requireRole` middleware to restrict access to users with the roles: OWNER, ADMIN, or SUB_ADMIN.
+> For more details, see the [requireAuth](../middleware/requireAuth) and [requireRole](../middleware/requireRole) documentation.
+
+## Key Functions
+
+### `createNote`
+
+Creates a new note in a specified world.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/note/:id` (where `id` is the world ID).
+2. Reads `title`, `content`, and `tag` from the request body.
+3. Uses the authenticated user's ID from the request.
+4. Creates the note in the database, associating it with the world and author.
+5. Returns a success response.
+
+### `getWorldNotes`
+
+Retrieves all notes for a specific world, including author usernames.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/note/:id` (where `id` is the world ID).
+2. Queries the database for all notes in the specified world.
+3. Includes author information for each note.
+4. Returns a JSON response with the list of notes.
+
+### `deleteNote`
+
+Deletes a specific note.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/note/:id` (where `id` is the note ID).
+2. Checks the user's role (must be OWNER, ADMIN, or SUB_ADMIN).
+3. Deletes the note from the database.
+4. Returns a success response.
+
+## Routes
+
+The following routes are defined in `note.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Description</th>
+      <th>Controller Function</th>
+      <th>Middleware</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/note/:id</td>
+      <td>Create a note in a world</td>
+      <td>
+        <code>createNote</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/note/:id</td>
+      <td>Get all notes for a world</td>
+      <td>
+        <code>getWorldNotes</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/api/note/:id</td>
+      <td>Delete a note</td>
+      <td>
+        <code>deleteNote</code>
+      </td>
+      <td>
+        <code>requireAuth, requireRole(["OWNER", "ADMIN", "SUB_ADMIN"])</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Error Handling
+
+- All errors are caught and returned as a `500 Internal Server Error` with the error details in the response JSON.
+
+## Example Requests & Responses
+
+### Create Note
+
+**Request:**
+
+```http
+POST /api/note/:id
+Content-Type: application/json
+
+{
+  "title": "Strategy",
+  "content": "Focus on the east gate first.",
+  "tag": "battle"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+### Get World Notes
+
+**Request:**
+
+```http
+GET /api/note/:id
+```
+
+**Successful Response:**
+
+```json
+{
+  "notes": [
+    {
+      "id": "note1",
+      "title": "Strategy",
+      "content": "Focus on the east gate first.",
+      "tag": "battle",
+      "author": { "username": "player1" }
+    }
+    // ...more notes
+  ]
+}
+```
+
+---
+
+### Delete Note
+
+**Request:**
+
+```http
+DELETE /api/note/:id
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+## Usage Instructions
+
+1. **Create a Note:**  
+   Use `POST /api/note/:id` with note details in the request body to create a new note in a world.
+2. **View Notes:**  
+   Use `GET /api/note/:id` to retrieve all notes for a world.
+3. **Delete a Note:**  
+   Use `DELETE /api/note/:id` to remove a note (requires OWNER, ADMIN, or SUB_ADMIN role).
+
+## Dependencies
+
+- **Express**: Handles HTTP requests and responses.
+- **Prisma**: ORM for database

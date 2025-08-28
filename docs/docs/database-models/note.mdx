@@ -1,0 +1,103 @@
+---
+sidebar_position: 6
+---
+
+# Note
+
+The **Note** model represents notes created by users within worlds. Notes can be used for strategies, reminders, or any information relevant to a world.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique note ID</td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td>String</td>
+      <td></td>
+      <td>Title of the note</td>
+    </tr>
+    <tr>
+      <td>content</td>
+      <td>String</td>
+      <td></td>
+      <td>Content of the note</td>
+    </tr>
+    <tr>
+      <td>tag</td>
+      <td>String</td>
+      <td></td>
+      <td>Tag or category for the note</td>
+    </tr>
+    <tr>
+      <td>authorId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the user who authored the note</td>
+    </tr>
+    <tr>
+      <td>author</td>
+      <td>User</td>
+      <td>@relation</td>
+      <td>The user who authored the note</td>
+    </tr>
+    <tr>
+      <td>worldId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the world the note belongs to</td>
+    </tr>
+    <tr>
+      <td>world</td>
+      <td>World</td>
+      <td>@relation</td>
+      <td>The world associated with the note</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>DateTime</td>
+      <td>@default(now())</td>
+      <td>Timestamp when the note was created</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **Note** belongs to a **User** (`authorId`).
+- **Note** belongs to a **World** (`worldId`).
+
+## Example Record
+
+```json
+{
+  "id": "note1",
+  "title": "Strategy",
+  "content": "Focus on the east gate first.",
+  "tag": "battle",
+  "authorId": "user123",
+  "worldId": "world123",
+  "createdAt": "2025-09-01T18:00:00.000Z",
+  "author": {
+    "id": "user123",
+    "username": "player1"
+  },
+  "world": {
+    "id": "world123",
+    "name": "Adventure Realm"
+  }
+}
+```

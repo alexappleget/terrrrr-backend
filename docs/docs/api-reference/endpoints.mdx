@@ -1,0 +1,285 @@
+---
+sidebar_position: 2
+---
+
+# Endpoints
+
+This section lists all available API endpoints for the Terrrrr backend, organized by controllers.
+
+---
+
+## Auth Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/api/auth/session</td>
+      <td>Verifies the user's JWT session</td>
+      <td>No, but will fail if no user cookies present.</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/auth/refresh</td>
+      <td>Rotates and issues new tokens</td>
+      <td>No, but will fail if no user cookies present.</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Boss Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/api/boss/:id</td>
+      <td>Get all bosses for a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/boss/:id</td>
+      <td>Update killed state for a boss</td>
+      <td>Yes</td>
+      <td>Owner, Admin, Sub Admin</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Event Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/event/:id</td>
+      <td>Create an event for the user's world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/event/join/:id</td>
+      <td>Allows user to join a world event</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/event/:id</td>
+      <td>Gets all events for a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/api/event/:id</td>
+      <td>Deletes an event</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+--
+
+## Note Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/note/:id</td>
+      <td>Creates an event for a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/note/:id</td>
+      <td>All notes for a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/api/note/:id</td>
+      <td>Deletes an event for a world</td>
+      <td>Yes</td>
+      <td>Owner, Admin, Sub Admin</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## User Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/user/signup</td>
+      <td>Register a new user</td>
+      <td>No</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/user/signin</td>
+      <td>Sign in and receive JWT and refresh tokens via httpOnly cookies</td>
+      <td>No</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/user/signout</td>
+      <td>Sign out user</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/user/fetchUserById</td>
+      <td>Get user information by their id</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## World Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/world/create</td>
+      <td>Creates a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/world/join</td>
+      <td>Joins a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/world/</td>
+      <td>Gets all worlds a user is a part of</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/world/adminData/:id</td>
+      <td>Get admin data for a world</td>
+      <td>Yes</td>
+      <td>Owner, Admin, Sub Admin</td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/world/:id</td>
+      <td>Update data for a world</td>
+      <td>Yes</td>
+      <td>Owner</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## World Membership Endpoints
+
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Path</th>
+    <th>Description</th>
+    <th>Auth Required</th>
+    <th>Role Required</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/api/membership/all/:id</td>
+      <td>All members in a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/membership/:id</td>
+      <td>Membership role in a world</td>
+      <td>Yes</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/membership/:id</td>
+      <td>Update membership for someone in a world</td>
+      <td>Yes</td>
+      <td>Owner</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+**Tip:**  
+For details, parameters, and examples, see the controller and routes documentation for each section.

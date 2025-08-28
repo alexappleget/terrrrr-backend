@@ -1,0 +1,75 @@
+---
+sidebar_position: 2
+---
+
+# Boss
+
+The **Boss** model represents a boss entity in the Terrrrr backend. Bosses are linked to worlds and their progress is tracked via the `WorldBossProgress` model.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique boss ID</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td></td>
+      <td>Name of the boss</td>
+    </tr>
+    <tr>
+      <td>health</td>
+      <td>String</td>
+      <td></td>
+      <td>Health value or description</td>
+    </tr>
+    <tr>
+      <td>stage</td>
+      <td>String</td>
+      <td></td>
+      <td>Stage or phase of the boss</td>
+    </tr>
+    <tr>
+      <td>worldProgress</td>
+      <td>WorldBossProgress[]</td>
+      <td>@relation</td>
+      <td>Progress records for this boss in worlds</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **Boss** has many `WorldBossProgress` records (one per world).
+- Linked to worlds through `WorldBossProgress`.
+
+## Example Record
+
+```json
+{
+  "id": "boss1",
+  "name": "Dragon Lord",
+  "health": "5000",
+  "stage": "Final",
+  "worldProgress": [
+    {
+      "id": "progress1",
+      "worldId": "world123",
+      "killed": false
+    }
+  ]
+}
+```

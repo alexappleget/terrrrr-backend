@@ -1,0 +1,72 @@
+---
+sidebar_position: 5
+---
+
+# JoinCode
+
+The **JoinCode** model represents a unique code that allows users to join a specific world. Each world has one join code, and each join code is associated with only one world.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique join code ID</td>
+    </tr>
+    <tr>
+      <td>code</td>
+      <td>String</td>
+      <td>@unique</td>
+      <td>The actual join code string</td>
+    </tr>
+    <tr>
+      <td>worldId</td>
+      <td>String</td>
+      <td>@unique</td>
+      <td>ID of the world this join code belongs to</td>
+    </tr>
+    <tr>
+      <td>world</td>
+      <td>World</td>
+      <td>@relation</td>
+      <td>The world associated with this join code</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>DateTime</td>
+      <td>@default(now())</td>
+      <td>Timestamp when the join code was created</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **JoinCode** belongs to a **World** (`worldId`).
+- Each **World** can have only one **JoinCode**.
+
+## Example Record
+
+```json
+{
+  "id": "joincode1",
+  "code": "abc123",
+  "worldId": "world123",
+  "createdAt": "2025-09-01T18:00:00.000Z",
+  "world": {
+    "id": "world123",
+    "name": "Adventure Realm"
+  }
+}
+```

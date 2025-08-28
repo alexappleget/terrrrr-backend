@@ -1,0 +1,230 @@
+---
+sidebar_position: 3
+---
+
+# Event
+
+The `event.controller.ts` file manages world events, including creation, retrieval, joining, and leaving events. These endpoints allow users to interact with events in a specific world.
+
+> **Note:**
+> All event routes use the `requireAuth` middleware to ensure the user is authenticated.
+> For more details, see the [requireAuth](../middleware/requireAuth) documentation.
+
+## Key Functions
+
+### `createEvent`
+
+Creates a new event in a specified world and automatically RSVPs the creator.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/event/:id` (where `id` is the world ID).
+2. Reads `name`, `description`, and `scheduledAt` from the request body.
+3. Creates the event in the database, associating it with the world and creator.
+4. Automatically creates an RSVP for the creator.
+5. Returns a success response.
+
+### `getWorldEvents`
+
+Retrieves all events for a specific world, including RSVP details.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/event/:id` (where `id` is the world ID).
+2. Queries the database for all events in the specified world.
+3. Includes RSVP information and usernames for each event.
+4. Returns a JSON response with the list of events and RSVP details.
+
+### `joinEvent`
+
+Allows a user to RSVP (join) an event.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/event/join/:id` (where `id` is the event ID).
+2. Uses the authenticated user's ID from the request.
+3. Creates an RSVP record in the database.
+4. Returns a success response.
+
+### `leaveEvent`
+
+Allows a user to remove their RSVP (leave) an event.
+
+**Flow:**
+
+1. Extracts the `id` parameter from the request at the endpoint `/api/event/:id` (where `id` is the event ID).
+2. Uses the authenticated user's ID from the request.
+3. Deletes the RSVP record from the database.
+4. Returns a success response.
+
+## Routes
+
+The following routes are defined in `event.routes.ts` and connect HTTP requests to the corresponding controller functions:
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Path</th>
+      <th>Description</th>
+      <th>Controller Function</th>
+      <th>Middleware</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>POST</td>
+      <td>/api/event/:id</td>
+      <td>Create a new event in a world</td>
+      <td>
+        <code>createEvent</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/event/join/:id</td>
+      <td>RSVP (join) an event</td>
+      <td>
+        <code>joinEvent</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/event/:id</td>
+      <td>Get all events for a world</td>
+      <td>
+        <code>getWorldEvents</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/api/event/:id</td>
+      <td>Remove RSVP (leave) an event</td>
+      <td>
+        <code>leaveEvent</code>
+      </td>
+      <td>
+        <code>requireAuth</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Error Handling
+
+- All errors are caught and returned as a `500 Internal Server Error` with the error details in the response JSON.
+
+## Example Requests & Responses
+
+### Create Event
+
+**Request:**
+
+```http
+POST /api/event/:id
+Content-Type: application/json
+
+{
+  "name": "Boss Raid",
+  "description": "Defeat the world boss together!",
+  "scheduledAt": "2025-09-01T18:00:00.000Z"
+}
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+### Get World Events
+
+**Request:**
+
+```http
+GET /api/event/:id
+```
+
+**Successful Response:**
+
+```json
+{
+  "events": [
+    {
+      "id": "event1",
+      "name": "Boss Raid",
+      "description": "Defeat the world boss together!",
+      "scheduledAt": "2025-09-01T18:00:00.000Z",
+      "RSVPs": [{ "user": { "username": "player1" } }]
+    }
+    // ...more events
+  ]
+}
+```
+
+---
+
+### Join Event
+
+**Request:**
+
+```http
+POST /api/event/join/:id
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+### Leave Event
+
+**Request:**
+
+```http
+DELETE /api/event/:id
+```
+
+**Successful Response:**
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+## Usage Instructions
+
+1. **Create an Event:**  
+   Use `POST /api/event/:id` with event details in the request body to create a new event in a world.
+2. **View Events:**  
+   Use `GET /api/event/:id` to retrieve all events for a world.
+3. **Join an Event:**  
+   Use `POST /api/event/join/:id` to RSVP to an event.
+4. **Leave an Event:**  
+   Use `DELETE /api/event/:id` to remove your RSVP from an event.
+
+## Dependencies
+
+- **Express**: Handles HTTP requests and responses.
+- **Prisma**: ORM for

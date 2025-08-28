@@ -1,0 +1,75 @@
+---
+sidebar_position: 4
+---
+
+# EventRSVP
+
+The **EventRSVP** model tracks which users have RSVP’d (joined) specific events within a world. Each record represents a user's attendance for a particular event.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique RSVP ID</td>
+    </tr>
+    <tr>
+      <td>eventId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the event being RSVP’d</td>
+    </tr>
+    <tr>
+      <td>userId</td>
+      <td>String</td>
+      <td></td>
+      <td>ID of the user who RSVP’d</td>
+    </tr>
+    <tr>
+      <td>event</td>
+      <td>Event</td>
+      <td>@relation</td>
+      <td>The event this RSVP is for</td>
+    </tr>
+    <tr>
+      <td>user</td>
+      <td>User</td>
+      <td>@relation</td>
+      <td>The user who RSVP’d</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **EventRSVP** belongs to an **Event** (`eventId`).
+- **EventRSVP** belongs to a **User** (`userId`).
+
+## Example Record
+
+```json
+{
+  "id": "rsvp1",
+  "eventId": "event1",
+  "userId": "user789",
+  "event": {
+    "id": "event1",
+    "name": "Boss Raid"
+  },
+  "user": {
+    "id": "user789",
+    "username": "player2"
+  }
+}
+```

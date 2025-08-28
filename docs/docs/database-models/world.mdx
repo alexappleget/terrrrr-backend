@@ -1,0 +1,103 @@
+---
+sidebar_position: 8
+---
+
+# World
+
+The **World** model represents a game world in the Terrrrr backend. Worlds are created by users and can have members, bosses, notes, events, and a unique join code.
+
+## Fields
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Attributes</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>String</td>
+      <td>@id, @default(cuid())</td>
+      <td>Unique world ID</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td></td>
+      <td>Name of the world</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td></td>
+      <td>Description of the world</td>
+    </tr>
+    <tr>
+      <td>createdAt</td>
+      <td>DateTime</td>
+      <td>@default(now())</td>
+      <td>Timestamp when the world was created</td>
+    </tr>
+    <tr>
+      <td>joinCode</td>
+      <td>JoinCode?</td>
+      <td>@relation</td>
+      <td>Unique join code for this world</td>
+    </tr>
+    <tr>
+      <td>memberships</td>
+      <td>WorldMembership[]</td>
+      <td>@relation</td>
+      <td>Members of the world</td>
+    </tr>
+    <tr>
+      <td>bosses</td>
+      <td>WorldBossProgress[]</td>
+      <td>@relation</td>
+      <td>Boss progress records for this world</td>
+    </tr>
+    <tr>
+      <td>notes</td>
+      <td>Note[]</td>
+      <td>@relation</td>
+      <td>Notes created in this world</td>
+    </tr>
+    <tr>
+      <td>events</td>
+      <td>Event[]</td>
+      <td>@relation</td>
+      <td>Events scheduled in this world</td>
+    </tr>
+  </tbody>
+</table>
+
+## Relationships
+
+- **World** can have one **JoinCode**.
+- **World** has many **WorldMemberships** (users with roles).
+- **World** has many **Bosses** (via **WorldBossProgress**).
+- **World** has many **Notes**.
+- **World** has many **Events**.
+
+## Example Record
+
+```json
+{
+  "id": "world123",
+  "name": "Adventure Realm",
+  "description": "A world for epic quests.",
+  "createdAt": "2025-09-01T18:00:00.000Z",
+  "joinCode": {
+    "id": "joincode1",
+    "code": "abc123"
+  },
+  "memberships": [{ "userId": "user123", "role": "OWNER" }],
+  "bosses": [{ "id": "progress1", "bossId": "boss1", "killed": false }],
+  "notes": [{ "id": "note1", "title": "Strategy" }],
+  "events": [{ "id": "event1", "name": "Boss Raid" }]
+}
+```
