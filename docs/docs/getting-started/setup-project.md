@@ -76,5 +76,4 @@ npm run dev
 ## Next Steps
 
 - Check [API Reference](../category/api-reference) for available endpoints.
-- Learn [Authentication & Authorization](../category/authentication--authorization) for JWT and protected routes.
 - Explore [Controllers & Routes](../category/controllers--routes) to understand backend logic.
