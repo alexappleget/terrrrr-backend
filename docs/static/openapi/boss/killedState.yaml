@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/boss/{id}:
+    patch:
+      tags:
+        - Bosses
+      summary: Update killed state for a world boss
+      description: Updates the killed state for a specific world boss progress. Grabs the world boss progress ID from the path parameter (`id`), and updates the `killed` value using the request body. Only users with OWNER, ADMIN, or SUB_ADMIN roles can access this endpoint.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world boss progress to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - killed
+              properties:
+                killed:
+                  type: boolean
+                  description: Set to true if the boss is killed, false otherwise.
+                  example: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "403":
+          description: Forbidden (insufficient role)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
