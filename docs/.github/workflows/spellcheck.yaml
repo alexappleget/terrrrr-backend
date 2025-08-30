@@ -1,0 +1,16 @@
+name: Spell Check Docs
+
+on:
+  pull_request:
+    paths:
+      - "docs/**.md"
+      - "docs/**.mdx"
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: check-spelling/check-spelling@v0.0.20
+        with:
+          config: .github/actions/spellcheck/config
