@@ -1,7 +1,7 @@
 # .github/actions/spellcheck/config
 
 # List of files to check (default: all markdown and text files)
-include:
+only:
   - "**/*.md"
   - "**/*.mdx"
 
