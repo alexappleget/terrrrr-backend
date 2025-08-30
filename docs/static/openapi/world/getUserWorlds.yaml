@@ -52,16 +52,6 @@ paths:
                 properties:
                   error:
                     type: string
-        "400":
-          description: Bad request (missing userId)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "UserId not provided"
         "500":
           description: Internal server error
           content:

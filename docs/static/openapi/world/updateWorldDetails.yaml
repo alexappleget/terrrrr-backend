@@ -8,7 +8,7 @@ paths:
       tags:
         - Worlds
       summary: Update world details
-      description: Updates the name and description of a specific world. Requires authentication via JWT cookie and OWNER, ADMIN, or SUB_ADMIN role. The world ID is provided as a path parameter.
+      description: Updates the name, description, and join code of a specific world. Requires authentication via JWT cookie and OWNER role. The world ID is provided as a path parameter.
       parameters:
         - name: id
           in: path
