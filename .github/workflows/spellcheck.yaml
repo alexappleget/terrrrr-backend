@@ -3,8 +3,8 @@ name: Spell Check Docs
 on:
   pull_request:
     paths:
-      - "docs/**.md"
-      - "docs/**.mdx"
+      - "**/*.md"
+      - "**/*.mdx"
 
 permissions:
   pull-requests: write
