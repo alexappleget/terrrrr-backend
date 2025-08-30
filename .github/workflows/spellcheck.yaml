@@ -11,6 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: check-spelling/check-spelling@v0.0.22
+      - uses: check-spelling/check-spelling@v0.51.0
         with:
           config: .github/actions/spellcheck/config
