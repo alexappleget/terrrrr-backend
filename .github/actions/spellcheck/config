@@ -5,6 +5,21 @@ include:
   - "**/*.md"
   - "**/*.mdx"
 
+exclude:
+  - "**/*.js"
+  - "**/*.ts"
+  - "**/*.json"
+  - "**/*.lock"
+  - "**/*.yml"
+  - "**/*.yaml"
+  - "**/*.txt"
+  - "**/*.env"
+  - "**/*.toml"
+  - "**/*.html"
+  - "**/*.css"
+  - "package-lock.json"
+  - "node_modules/**"
+
 # You can add custom words to ignore (project names, technical terms, etc.)
 dictionary:
   - Terrrrr
