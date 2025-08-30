@@ -17,3 +17,9 @@ jobs:
       - uses: check-spelling/check-spelling@v0.0.25
         with:
           config: .github/actions/spellcheck/config
+          extra_dictionaries: |
+            cspell:npm/dict/npm.txt
+            cspell:software-terms/dict/softwareTerms.txt
+            cspell:typescript/dict/typescript.txt
+            cspell:k8s/dict/k8s.txt
+            cspell:php/dict/php.txt
