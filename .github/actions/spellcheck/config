@@ -5,10 +5,6 @@ include:
   - "**/*.md"
   - "**/*.mdx"
 
-# List of files or patterns to ignore
-exclude:
-  - "**/*"
-
 # You can add custom words to ignore (project names, technical terms, etc.)
 dictionary:
   - Terrrrr
