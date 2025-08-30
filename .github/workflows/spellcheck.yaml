@@ -6,6 +6,9 @@ on:
       - "docs/**.md"
       - "docs/**.mdx"
 
+permissions:
+  pull-requests: write
+
 jobs:
   spellcheck:
     runs-on: ubuntu-latest
