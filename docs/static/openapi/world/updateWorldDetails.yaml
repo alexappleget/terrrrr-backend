@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/world/{id}:
+    patch:
+      tags:
+        - Worlds
+      summary: Update world details
+      description: Updates the name, description, and join code of a specific world. Requires authentication via JWT cookie and OWNER role. The world ID is provided as a path parameter.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Adventure Realm"
+                  description: New name for the world.
+                description:
+                  type: string
+                  example: "A world for epic quests and battles."
+                  description: New description for the world.
+      responses:
+        "200":
+          description: World updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "403":
+          description: Forbidden (insufficient role)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

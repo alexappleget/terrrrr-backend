@@ -2,6 +2,8 @@
 sidebar_position: 7
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # World Membership
 
 The `worldMembership.controller.ts` file manages user memberships within worlds, including retrieving all members, fetching a user's membership, and updating member roles. These endpoints allow for viewing and managing world membership and roles.
@@ -24,6 +26,11 @@ Retrieves all members of a specific world, including their usernames and the wor
 3. Retrieves the join code for the world.
 4. Returns a JSON response with the join code and member list.
 
+<SwaggerUI
+  url="/openapi/world-membership/getAllMemberships.yaml"
+  supportedSubmitMethods={[]}
+/>
+
 ### `getWorldMembership`
 
 Retrieves the authenticated user's membership for a specific world.
@@ -35,6 +42,11 @@ Retrieves the authenticated user's membership for a specific world.
 3. Queries the database for the user's membership in the specified world, including world details.
 4. Returns a JSON response with the membership data.
 
+<SwaggerUI
+  url="/openapi/world-membership/getWorldMembership.yaml"
+  supportedSubmitMethods={[]}
+/>
+
 ### `updateMemberRole`
 
 Updates the role of a member in a specific world (OWNER only).
@@ -45,6 +57,11 @@ Updates the role of a member in a specific world (OWNER only).
 2. Reads `role` and `userId` from the request body.
 3. Updates the member's role in the database.
 4. Returns a success response.
+
+<SwaggerUI
+  url="/openapi/world-membership/updateMemberRole.yaml"
+  supportedSubmitMethods={[]}
+/>
 
 ## Routes
 

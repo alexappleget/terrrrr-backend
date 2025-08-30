@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/membership/{id}:
+    get:
+      tags:
+        - World Membership
+      summary: Get authenticated user's membership for a world
+      description: Retrieves the authenticated user's membership for a specific world, including their role and world details. Requires authentication via JWT cookie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to fetch membership for.
+      responses:
+        "200":
+          description: Membership details for the user in the world
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  membership:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        example: "MEMBER"
+                      world:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "world123"
+                          name:
+                            type: string
+                            example: "Adventure Realm"
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "400":
+          description: Bad request (missing userId or worldId)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "UserId or WorldId not provided"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

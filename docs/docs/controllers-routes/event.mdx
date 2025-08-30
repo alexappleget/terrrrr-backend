@@ -2,6 +2,8 @@
 sidebar_position: 3
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # Event
 
 The `event.controller.ts` file manages world events, including creation, retrieval, joining, and leaving events. These endpoints allow users to interact with events in a specific world.
@@ -24,6 +26,8 @@ Creates a new event in a specified world and automatically RSVPs the creator.
 4. Automatically creates an RSVP for the creator.
 5. Returns a success response.
 
+<SwaggerUI url="/openapi/event/createEvent.yaml" supportedSubmitMethods={[]} />
+
 ### `getWorldEvents`
 
 Retrieves all events for a specific world, including RSVP details.
@@ -34,6 +38,11 @@ Retrieves all events for a specific world, including RSVP details.
 2. Queries the database for all events in the specified world.
 3. Includes RSVP information and usernames for each event.
 4. Returns a JSON response with the list of events and RSVP details.
+
+<SwaggerUI
+  url="/openapi/event/getWorldEvents.yaml"
+  supportedSubmitMethods={[]}
+/>
 
 ### `joinEvent`
 
@@ -46,6 +55,8 @@ Allows a user to RSVP (join) an event.
 3. Creates an RSVP record in the database.
 4. Returns a success response.
 
+<SwaggerUI url="/openapi/event/joinEvent.yaml" supportedSubmitMethods={[]} />
+
 ### `leaveEvent`
 
 Allows a user to remove their RSVP (leave) an event.
@@ -56,6 +67,8 @@ Allows a user to remove their RSVP (leave) an event.
 2. Uses the authenticated user's ID from the request.
 3. Deletes the RSVP record from the database.
 4. Returns a success response.
+
+<SwaggerUI url="/openapi/event/leaveEvent.yaml" supportedSubmitMethods={[]} />
 
 ## Routes
 

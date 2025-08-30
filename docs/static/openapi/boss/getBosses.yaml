@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/boss/{id}:
+    get:
+      tags:
+        - Bosses
+      summary: Get all bosses for a world
+      description: Returns all bosses for the specified world, including their progress (killed state). Requires authentication via JWT cookie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to fetch bosses for.
+      responses:
+        "200":
+          description: List of bosses for the world
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bosses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "boss1"
+                        name:
+                          type: string
+                          example: "Dragon Lord"
+                        health:
+                          type: string
+                          example: "5000"
+                        stage:
+                          type: string
+                          example: "Final"
+                        worldProgress:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "progress1"
+                            worldId:
+                              type: string
+                              example: "world123"
+                            killed:
+                              type: boolean
+                              example: false
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # Boss
 
 The `boss.controller.ts` file manages world boss data and their progress states. It provides endpoints to retrieve all bosses for a world and to update the killed state of a boss.
@@ -24,6 +26,8 @@ Retrieves all bosses for a given world, including their progress.
 3. Maps the results to include only the relevant progress for each boss.
 4. Returns a JSON response with the list of bosses and their progress.
 
+<SwaggerUI url="/openapi/boss/getBosses.yaml" supportedSubmitMethods={[]} />
+
 ### `setBossKilledState`
 
 Updates the killed state of a specific world boss.
@@ -34,6 +38,8 @@ Updates the killed state of a specific world boss.
 2. Reads the `killed` value from the request body.
 3. Updates the killed state in the database for the specified boss progress.
 4. Returns a success response.
+
+<SwaggerUI url="/openapi/boss/killedState.yaml" supportedSubmitMethods={[]} />
 
 ## Routes
 

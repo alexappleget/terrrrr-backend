@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/event/{id}:
+    post:
+      tags:
+        - Events
+      summary: Create a new event in a world
+      description: Creates a new event for the specified world. Requires authentication via JWT cookie. The world ID is provided as a path parameter. The request body must include `name`, `description`, and `scheduledAt`. The authenticated user will be set as the event creator and automatically RSVP'd.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to create the event in.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Boss Raid"
+                  description: Name of the event.
+                description:
+                  type: string
+                  example: "Defeat the Dragon Lord together!"
+                  description: Description of the event.
+                scheduledAt:
+                  type: string
+                  format: date-time
+                  example: "2025-09-01T18:00:00.000Z"
+                  description: ISO date-time for when the event is scheduled.
+      responses:
+        "200":
+          description: Event created successfully and RSVP'd
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

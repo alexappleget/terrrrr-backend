@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/note/{id}:
+    post:
+      tags:
+        - Notes
+      summary: Create a new note in a world
+      description: Creates a new note for the specified world. Requires authentication via JWT cookie. The world ID is provided as a path parameter. The request body must include `title`, `content`, and `tag`. The authenticated user's ID is used as the author.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to create the note in.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Strategy"
+                  description: Title of the note.
+                content:
+                  type: string
+                  example: "Focus on the east gate first."
+                  description: Content of the note.
+                tag:
+                  type: string
+                  example: "battle"
+                  description: Tag for categorizing the note.
+      responses:
+        "200":
+          description: Note created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
