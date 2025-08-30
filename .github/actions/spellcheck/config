@@ -1,0 +1,22 @@
+# .github/actions/spellcheck/config
+
+# List of files to check (default: all markdown and text files)
+include:
+  - "**/*.md"
+  - "**/*.mdx"
+
+# You can add custom words to ignore (project names, technical terms, etc.)
+dictionary:
+  - Terrrrr
+  - Docusaurus
+  - Vercel
+  - GitHub
+  - API
+  - JWT
+  - Prisma
+
+# Set the language (default: en_US)
+language: en_US
+
+# Optionally, set the minimum word length to check
+min_word_length: 3
