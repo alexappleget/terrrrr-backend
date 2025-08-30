@@ -1,7 +1,7 @@
 # .github/actions/spellcheck/config
 
 # List of files to check (default: all markdown and text files)
-only:
+include:
   - "**/*.md"
   - "**/*.mdx"
 
@@ -14,6 +14,53 @@ dictionary:
   - API
   - JWT
   - Prisma
+  - alexappleget
+  - Appleget
+  - clsx
+  - Cthulhu
+  - dafb
+  - datasource
+  - dracula
+  - dsd
+  - ecc
+  - fbbebe
+  - fddbf
+  - fff
+  - ffff
+  - firefox
+  - Fishron
+  - hardmode
+  - IAuth
+  - IAuthenticated
+  - IBoss
+  - ico
+  - idx
+  - IEvent
+  - ifm
+  - INote
+  - IUser
+  - IWorld
+  - joincode
+  - JWTs
+  - keytar
+  - mjml
+  - pids
+  - Plantera
+  - Postgre
+  - postgresql
+  - prisma
+  - RSVPs
+  - securepassword
+  - signin
+  - signout
+  - signup
+  - Skeletron
+  - standalone
+  - tagline
+  - Terrrr
+  - terrrrr
+  - usernames
+  - website
 
 # Set the language (default: en_US)
 language: en_US
