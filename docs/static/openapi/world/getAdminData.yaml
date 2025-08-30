@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/world/adminData/{id}:
+    get:
+      tags:
+        - Worlds
+      summary: Get admin data for a world
+      description: Retrieves admin data for a specific world, including join code, memberships (with usernames), bosses, notes, and events. Requires authentication via JWT cookie and OWNER, ADMIN, or SUB_ADMIN role.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to get admin data for.
+      responses:
+        "200":
+          description: Admin data for the world
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  adminData:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "world123"
+                      name:
+                        type: string
+                        example: "Adventure Realm"
+                      joinCode:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            example: "abc123"
+                      memberships:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            user:
+                              type: object
+                              properties:
+                                username:
+                                  type: string
+                                  example: "player1"
+                            role:
+                              type: string
+                              example: "OWNER"
+                      bosses:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "boss1"
+                            name:
+                              type: string
+                              example: "Dragon Lord"
+                      notes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "note1"
+                            title:
+                              type: string
+                              example: "Strategy"
+                      events:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "event1"
+                            name:
+                              type: string
+                              example: "Boss Raid"
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "403":
+          description: Forbidden (insufficient role)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

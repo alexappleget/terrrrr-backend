@@ -2,6 +2,8 @@
 sidebar_position: 4
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # Note
 
 The `note.controller.ts` file manages notes within worlds, including creation, retrieval, and deletion. These endpoints allow users to add, view, and remove notes in a specific world.
@@ -25,6 +27,8 @@ Creates a new note in a specified world.
 4. Creates the note in the database, associating it with the world and author.
 5. Returns a success response.
 
+<SwaggerUI url="/openapi/note/createNote.yaml" supportedSubmitMethods={[]} />
+
 ### `getWorldNotes`
 
 Retrieves all notes for a specific world, including author usernames.
@@ -36,6 +40,8 @@ Retrieves all notes for a specific world, including author usernames.
 3. Includes author information for each note.
 4. Returns a JSON response with the list of notes.
 
+<SwaggerUI url="/openapi/note/getWorldNotes.yaml" supportedSubmitMethods={[]} />
+
 ### `deleteNote`
 
 Deletes a specific note.
@@ -46,6 +52,8 @@ Deletes a specific note.
 2. Checks the user's role (must be OWNER, ADMIN, or SUB_ADMIN).
 3. Deletes the note from the database.
 4. Returns a success response.
+
+<SwaggerUI url="/openapi/note/deleteNote.yaml" supportedSubmitMethods={[]} />
 
 ## Routes
 

@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/event/{id}:
+    delete:
+      tags:
+        - Events
+      summary: Remove RSVP (leave) an event
+      description: Allows an authenticated user to remove their RSVP from an event. The event ID is provided as a path parameter. The authenticated user's ID is taken from the JWT cookie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the event to leave.
+      responses:
+        "200":
+          description: RSVP removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

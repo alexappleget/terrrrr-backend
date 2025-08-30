@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/world/create:
+    post:
+      tags:
+        - Worlds
+      summary: Create a new world
+      description: Creates a new world and assigns the creator as OWNER. Requires authentication via JWT cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  example: "Adventure Realm"
+                  description: Name of the world.
+                description:
+                  type: string
+                  example: "A world for epic quests."
+                  description: Description of the world.
+      responses:
+        "200":
+          description: World created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  worldId:
+                    type: string
+                    example: "world123"
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

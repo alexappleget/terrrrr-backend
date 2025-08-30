@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/event/{id}:
+    get:
+      tags:
+        - Events
+      summary: Get all events for a specific world
+      description: Retrieves all events for the specified world, including RSVP details and usernames. Requires authentication via JWT cookie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to fetch events for.
+      responses:
+        "200":
+          description: List of events for the world
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "event1"
+                        name:
+                          type: string
+                          example: "Boss Raid"
+                        description:
+                          type: string
+                          example: "Defeat the world boss together!"
+                        scheduledAt:
+                          type: string
+                          format: date-time
+                          example: "2025-09-01T18:00:00.000Z"
+                        RSVPs:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              user:
+                                type: object
+                                properties:
+                                  username:
+                                    type: string
+                                    example: "player1"
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

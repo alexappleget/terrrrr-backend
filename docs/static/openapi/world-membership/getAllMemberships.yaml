@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/membership/all/{id}:
+    get:
+      tags:
+        - World Membership
+      summary: Get all members and join code for a world
+      description: Retrieves all members of a specific world, including their usernames and the world's join code. Requires authentication via JWT cookie.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to fetch memberships for.
+      responses:
+        "200":
+          description: List of members and join code for the world
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: "abc123"
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: object
+                          properties:
+                            username:
+                              type: string
+                              example: "player1"
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

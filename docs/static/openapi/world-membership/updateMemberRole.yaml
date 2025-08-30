@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/membership/{id}:
+    patch:
+      tags:
+        - World Membership
+      summary: Update a member's role in a world
+      description: Updates the role of a member in a specific world. Requires authentication via JWT cookie and OWNER role. The world ID is provided as a path parameter. The request body must include `userId` and `role`.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to update membership for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - role
+              properties:
+                userId:
+                  type: string
+                  example: "user456"
+                  description: The ID of the user whose role is being updated.
+                role:
+                  type: string
+                  example: "ADMIN"
+                  description: The new role to assign (e.g., OWNER, ADMIN, MEMBER).
+      responses:
+        "200":
+          description: Member role updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "403":
+          description: Forbidden (insufficient role)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "400":
+          description: Bad request (missing userId or role)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "userId or role not provided"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

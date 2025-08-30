@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/note/{id}:
+    get:
+      tags:
+        - Notes
+      summary: Get all notes for a specific world
+      description: Retrieves all notes for the specified world. Requires authentication via JWT cookie. The world ID is provided as a path parameter.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the world to fetch notes for.
+      responses:
+        "200":
+          description: List of notes for the world
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: "note1"
+                        title:
+                          type: string
+                          example: "Strategy"
+                        content:
+                          type: string
+                          example: "Focus on the east gate first."
+                        tag:
+                          type: string
+                          example: "battle"
+                        author:
+                          type: object
+                          properties:
+                            username:
+                              type: string
+                              example: "player1"
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

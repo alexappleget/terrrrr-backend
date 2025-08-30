@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: Terrrrr Backend API
+  version: 1.0.0
+paths:
+  /api/world/:
+    get:
+      tags:
+        - Worlds
+      summary: Get worlds for authenticated user
+      description: Retrieves all worlds the authenticated user is a member of. Requires authentication via JWT cookie.
+      responses:
+        "200":
+          description: List of user world memberships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userWorldMemberships:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: string
+                          example: "OWNER"
+                        world:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "world123"
+                            name:
+                              type: string
+                              example: "Adventure Realm"
+                            description:
+                              type: string
+                              example: "A world for epic quests."
+                            _count:
+                              type: object
+                              properties:
+                                memberships:
+                                  type: integer
+                                  example: 5
+        "401":
+          description: Unauthorized (missing or invalid JWT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "400":
+          description: Bad request (missing userId)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "UserId not provided"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

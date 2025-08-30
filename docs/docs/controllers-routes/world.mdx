@@ -2,6 +2,8 @@
 sidebar_position: 6
 ---
 
+import SwaggerUI from "swagger-ui-react";
+
 # World
 
 The `world.controller.ts` file manages worlds, including creation, joining, retrieving user worlds, admin data, and updating world details. These endpoints allow users to interact with worlds and manage their membership and settings.
@@ -26,6 +28,8 @@ Creates a new world and assigns the creator as OWNER.
 5. Initializes boss progress for the world.
 6. Returns the new world's ID.
 
+<SwaggerUI url="/openapi/world/createWorld.yaml" supportedSubmitMethods={[]} />
+
 ### `joinWorld`
 
 Allows a user to join a world using a join code.
@@ -38,6 +42,8 @@ Allows a user to join a world using a join code.
 4. Adds the user as a MEMBER if not already joined.
 5. Returns the world's ID.
 
+<SwaggerUI url="/openapi/world/joinWorld.yaml" supportedSubmitMethods={[]} />
+
 ### `getUserWorlds`
 
 Retrieves all worlds the authenticated user is a member of.
@@ -49,6 +55,11 @@ Retrieves all worlds the authenticated user is a member of.
 3. Includes world details and membership count.
 4. Returns the list of user world memberships.
 
+<SwaggerUI
+  url="/openapi/world/getUserWorlds.yaml"
+  supportedSubmitMethods={[]}
+/>
+
 ### `getAdminData`
 
 Retrieves admin data for a specific world.
@@ -58,6 +69,8 @@ Retrieves admin data for a specific world.
 1. Extracts the world ID from the request parameters.
 2. Finds the world and includes join code, memberships (with usernames), bosses, notes, and events.
 3. Returns the admin data.
+
+<SwaggerUI url="/openapi/world/getAdminData.yaml" supportedSubmitMethods={[]} />
 
 ### `updateWorldDetails`
 
@@ -69,6 +82,11 @@ Updates the name, description, and join code for a world.
 2. Reads `name`, `description`, and `code` from the request body.
 3. Updates the world and join code in the database.
 4. Returns a success response.
+
+<SwaggerUI
+  url="/openapi/world/updateWorldDetails.yaml"
+  supportedSubmitMethods={[]}
+/>
 
 ## Routes
 
