@@ -10,7 +10,7 @@ dotenv.config();
 const config: Config = {
   title: "Terrrrr Backend Docs",
   tagline: "Find all backend docs for the Terrrr backend here.",
-  favicon: "img/favicon.ico",
+  favicon: "img/logo.png",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -63,8 +63,8 @@ const config: Config = {
     navbar: {
       title: "Terrrrr Backend Docs",
       logo: {
-        alt: "Docusaurus Logo",
-        src: "img/logo.svg",
+        alt: "Terrrrr Logo",
+        src: "img/logo.png",
       },
       items: [
         {
