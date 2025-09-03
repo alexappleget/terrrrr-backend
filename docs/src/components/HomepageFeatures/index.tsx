@@ -5,8 +5,7 @@ import styles from "./styles.module.css";
 
 type FeatureItem = {
   title: string;
-  Img?: string;
-  Svg?: React.ComponentType<React.ComponentProps<"svg">>;
+  Img: string;
   description: ReactNode;
 };
 
@@ -23,7 +22,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Role-Based Access Explained",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    Img: require("@site/static/img/penguin-code.png").default,
     description: (
       <>
         Learn how authentication and authorization work, including JWT, user
@@ -34,7 +33,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: "Database Schema Reference",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    Img: require("@site/static/img/penguin-computer.png").default,
     description: (
       <>
         Explore clear documentation for all database models, relationships, and
@@ -44,15 +43,11 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-function Feature({ title, Svg, Img, description }: FeatureItem) {
+function Feature({ title, Img, description }: FeatureItem) {
   return (
     <div className={clsx("col col--4")}>
       <div className="text--center">
-        {Svg ? (
-          <Svg className={styles.featureSvg} role="img" />
-        ) : Img ? (
-          <img src={Img} className={styles.featureSvg} alt={title} />
-        ) : null}
+        <img src={Img} className={styles.featureSvg} alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
