@@ -12,7 +12,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: "Comprehensive API Docs",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    Svg: require("@site/static/img/penguin-guitar.png").default,
     description: (
       <>
         Find detailed documentation for every backend function, route, and
