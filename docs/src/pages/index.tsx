@@ -22,7 +22,7 @@ function HomepageHeader() {
             className="button button--secondary button--lg"
             to="/docs/intro"
           >
-            Terrrrr APIs Documentation 🧑‍💻
+            Terrrrr API Documentation 🧑‍💻
           </Link>
         </div>
       </div>
