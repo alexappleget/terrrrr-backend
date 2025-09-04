@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Project Structure
 
-This document explains how the Terrrrr backend is structured. It explains how the backend uses route files to define API endpoints and controller files to handle the logic for each endpoint. Understanding this structure will help you navigate the codebase, add new features, and debug existing functionality.
+This document explains how the project repository is structured. It explains how the backend uses route files to define API endpoints and controller files to handle the logic for each endpoint. Understanding this structure will help you navigate the codebase, add new features, and debug existing functionality.
 
 ---
 

@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Welcome to the Terrrrr Backend Documentation
+# Welcome to the Terrrrr API Documentation
 
 This site contains comprehensive documentation for all backend functions, routes, middleware, and database models in the terrrrr-backend project.
 

@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Overview
 
-Welcome to the Terrrrr Backend API Reference.
+Welcome to the Terrrrr API Reference.
 This section provides detailed documentation for all available API endpoints, including authentication, usage examples, and error handling.
 
 ## How to Use This API

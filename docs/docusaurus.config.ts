@@ -8,8 +8,8 @@ dotenv.config();
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "Terrrrr Backend Docs",
-  tagline: "Find all backend docs for the Terrrr backend here.",
+  title: "Terrrrr Docs",
+  tagline: "Find all API documentation for the Terrrrr here.",
   favicon: "img/logo.png",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -61,7 +61,7 @@ const config: Config = {
     // Replace with your project's social card
     image: "img/terrrrr-social-card.jpg",
     navbar: {
-      title: "Terrrrr Backend Docs",
+      title: "Terrrrr Docs",
       logo: {
         alt: "Terrrrr Logo",
         src: "img/logo.png",

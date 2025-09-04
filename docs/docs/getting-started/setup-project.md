@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Setup Your Backend Project
 
-Follow these steps to get the Terrrrr backend running on your Windows machine.
+Follow these steps to get the project repository running on your Windows machine.
 
 ---
 
@@ -22,7 +22,7 @@ https://github.com/alexappleget/terrrrr-backend.git
 - **Paste the repository URL** into the URL field
 - **Choose a local folder** where you want the project to be served, then click **"Clone the Repo!"**.
 
-> Note: Once the cloning is complete, the Terrrrr backend repository will be available on your machine.
+> Note: Once the cloning is complete, the repository will be available on your machine.
 
 ---
 
